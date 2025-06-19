@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "gC3eHDXpGaw=",
+  "success": true,
+  "projectFilePath": "/home/kerim/projects/student-forms/backend/student-forms.csproj",
+  "expectedPackageFiles": [
+    "/home/kerim/.nuget/packages/microsoft.aspnetcore.openapi/9.0.5/microsoft.aspnetcore.openapi.9.0.5.nupkg.sha512",
+    "/home/kerim/.nuget/packages/microsoft.openapi/1.6.17/microsoft.openapi.1.6.17.nupkg.sha512"
+  ],
+  "logs": []
+}

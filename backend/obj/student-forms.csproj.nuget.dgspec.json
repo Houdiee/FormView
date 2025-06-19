@@ -1,0 +1,77 @@
+{
+  "format": 1,
+  "restore": {
+    "/home/kerim/projects/student-forms/backend/student-forms.csproj": {}
+  },
+  "projects": {
+    "/home/kerim/projects/student-forms/backend/student-forms.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/kerim/projects/student-forms/backend/student-forms.csproj",
+        "projectName": "student-forms",
+        "projectPath": "/home/kerim/projects/student-forms/backend/student-forms.csproj",
+        "packagesPath": "/home/kerim/.nuget/packages/",
+        "outputPath": "/home/kerim/projects/student-forms/backend/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/kerim/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net9.0"
+        ],
+        "sources": {
+          "/nix/store/hx2g5w9hfkp7ikcnqz5jmjg3prb2cdi7-dotnet-sdk-9.0.106/share/dotnet/library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net9.0": {
+            "targetAlias": "net9.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.100"
+      },
+      "frameworks": {
+        "net9.0": {
+          "targetAlias": "net9.0",
+          "dependencies": {
+            "Microsoft.AspNetCore.OpenApi": {
+              "target": "Package",
+              "version": "[9.0.5, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/nix/store/hx2g5w9hfkp7ikcnqz5jmjg3prb2cdi7-dotnet-sdk-9.0.106/share/dotnet/sdk/9.0.106/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
