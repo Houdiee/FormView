@@ -1,7 +1,7 @@
 import type { Rule } from "antd/es/form";
 
 export const validateNotEmpty = (required: boolean): Rule[] => [
-  { required, message: "Cannot be empty " },
+  { required, message: "Cannot be empty" },
 ];
 
 export const validateAlphabetical = (required: boolean): Rule[] => [

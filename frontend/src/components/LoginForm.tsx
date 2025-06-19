@@ -9,6 +9,8 @@ export default function LoginForm() {
     password?: string;
   };
 
+  const [form] = Form.useForm();
+
   const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
     console.log('Success:', values);
   };
@@ -19,12 +21,12 @@ export default function LoginForm() {
 
   return (
     <Form
+      form={form}
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
       className="w-100"
     >
       <Form.Item<FieldType>
-        required
         name="email"
         rules={validateEmail(true)}
       >
@@ -32,7 +34,6 @@ export default function LoginForm() {
       </Form.Item>
 
       <Form.Item<FieldType>
-        required
         name="password"
         hasFeedback
         rules={validateText(true)}

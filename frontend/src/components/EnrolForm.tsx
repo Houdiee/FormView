@@ -7,20 +7,24 @@ import { useEffect } from "react";
 import { MinusCircleOutlined, PlusOutlined, UploadOutlined } from "@ant-design/icons";
 import { validateAlphabetical, validateNotEmpty, validateNumerical } from "../util/validator";
 
-export default function StudentForm() {
+interface EnrolFormProps {
+  onSubmitSuccessful: (isSuccessful: boolean) => void
+}
+
+export default function EnrolForm({ onSubmitSuccessful }: EnrolFormProps) {
   const [form] = Form.useForm();
 
   const dateOfBirth = Form.useWatch('date-of-birth', form);
 
   const onFinish = (values: any) => {
-    console.log(values);
+    onSubmitSuccessful(true);
   };
 
   useEffect(() => {
     if (dateOfBirth) {
       const birthDate = dayjs(dateOfBirth);
       const age = dayjs().diff(birthDate, "year");
-      form.setFieldsValue({ age: age });
+      form.setFieldsValue({ age: String(age) });
     } else {
       form.setFieldsValue({ age: undefined });
     }
@@ -57,7 +61,6 @@ export default function StudentForm() {
       </Form.Item>
 
       <Form.Item
-        required
         name="date-of-birth"
         label="Date of birth"
         rules={validateNotEmpty(true)}
@@ -66,13 +69,15 @@ export default function StudentForm() {
         <DatePicker disabledDate={current => current > dayjs()} />
       </Form.Item>
 
-      <Form.Item required name="age" label="Age"
+      <Form.Item
+        name="age"
+        label="Age"
         rules={validateNumerical(true)}
       >
         <Input/>
       </Form.Item>
 
-      <Form.Item required name="gender" label="Gender">
+      <Form.Item name="gender" label="Gender">
         <Radio.Group
           options={[
             { value: "male", label: "Male" },
@@ -82,7 +87,6 @@ export default function StudentForm() {
       </Form.Item>
 
       <Form.Item
-        required
         name="country-of-birth"
         label="Country of Birth"
         rules={validateNotEmpty(true)}
@@ -106,7 +110,6 @@ export default function StudentForm() {
       </Form.Item>
 
       <Form.Item
-        required
         name="country-of-citizenship"
         label="Country of Citizenship"
         rules={validateNotEmpty(true)}
@@ -136,10 +139,9 @@ export default function StudentForm() {
           {(fields, { add, remove }) => (
             <>
               {fields.map(({ key, name, ...restField }) => (
-                <Flex align="baseline" gap="small">
+                <Flex align="baseline" gap="small" key={key}>
                   <Form.Item
                     {...restField}
-                    required
                     name={[name, "first-name"]}
                     rules={validateAlphabetical(true)}
                     className="flex-grow"
@@ -149,7 +151,6 @@ export default function StudentForm() {
                   </Form.Item>
                   <Form.Item
                     {...restField}
-                    required
                     name={[name, "last-name"]}
                     rules={validateAlphabetical(true)}
                     className="flex-grow"
@@ -170,7 +171,7 @@ export default function StudentForm() {
         </Form.List>
       </Form.Item>
 
-      <Form.Item required label="Your Photo">
+      <Form.Item label="Your Photo" name="photo" rules={validateNotEmpty(true)}>
         <Upload
           accept="image/*"
           maxCount={1}

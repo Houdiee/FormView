@@ -5,14 +5,14 @@ import { BrowserRouter, Route } from 'react-router'
 import { Routes } from 'react-router'
 import LoginPage from './pages/LoginPage.tsx'
 import SignupPage from './pages/SignupPage.tsx'
-import StudentFormPage from './pages/StudentFormPage.tsx'
 import { Resend } from 'resend'
+import EnrolFormPage from './pages/EnrolFormPage.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
       <Routes>
-        <Route path="/forms/enrol" element={ <StudentFormPage/> }/>
+        <Route path="/forms/enrol" element={ <EnrolFormPage/> }/>
         <Route path="/login" element={ <LoginPage/> }/>
         <Route path="/signup" element={ <SignupPage/> }/>
       </Routes>

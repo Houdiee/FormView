@@ -18,6 +18,7 @@ export default function SignupForm({ onSignupSuccessful }: SignupFormProps) {
     confirmPassword?: string;
   };
 
+  const [form] = Form.useForm();
   const [api, contextHolder] = notification.useNotification();
 
   const onFinish: FormProps<FieldType>['onFinish'] = async (values) => {
@@ -54,13 +55,13 @@ export default function SignupForm({ onSignupSuccessful }: SignupFormProps) {
     <>
       {contextHolder}
       <Form
+        form={form}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         className="w-100"
         autoComplete="off"
       >
         <Form.Item<FieldType>
-          required
           name="firstName"
           hasFeedback
           rules={validateAlphabetical(true)}
@@ -69,7 +70,6 @@ export default function SignupForm({ onSignupSuccessful }: SignupFormProps) {
         </Form.Item>
 
         <Form.Item<FieldType>
-          required
           name="lastName"
           hasFeedback
           rules={validateAlphabetical(true)}

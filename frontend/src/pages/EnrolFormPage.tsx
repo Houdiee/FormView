@@ -1,0 +1,28 @@
+import { Card, Flex, Result } from "antd";
+import StudentForm from "../components/EnrolForm";
+import { useState } from "react";
+
+export default function EnrolFormPage() {
+  const [success, setSuccess] = useState<boolean>(false);
+
+  const formSubmitSuccessful = (isSuccessful: boolean) => {
+    setSuccess(isSuccessful);
+  };
+
+  return (
+    <>
+      <Flex justify="center" align="flex-start" className="!mt-10">
+          <Card className="w-200">
+            {success ?
+              <Result
+                status={success ? "success" : "error"}
+                title="Your form has been submitted"
+                subTitle="Your form is up for review. You can safely close this tab."
+              />
+              : <StudentForm onSubmitSuccessful={formSubmitSuccessful}/>
+          }
+          </Card>
+      </Flex>
+    </>
+  );
+}
