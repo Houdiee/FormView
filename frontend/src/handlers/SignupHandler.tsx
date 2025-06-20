@@ -11,17 +11,17 @@ type SignupRequest =  {
 export default async function signupHandler(req: SignupRequest) {
   try {
     await Promise.all([
-      axios.post(`${API_BACKEND_URL}/pending/request`, {
-        "first_name": req.firstName,
-        "last_name": req.lastName,
-        "email": req.email,
+      axios.post(`${API_BACKEND_URL}/pending/email`, {
+        firstName: req.firstName,
+        lastName: req.lastName,
+        email: req.email,
       }),
 
       axios.post(`${API_BACKEND_URL}/pending/users`, {
-        "first_name": req.firstName,
-        "last_name": req.lastName,
-        "email": req.email,
-        "password": req.password,
+        firstName: req.firstName,
+        lastName: req.lastName,
+        email: req.email,
+        password: req.password,
       }),
     ]);
   } catch (error) {
