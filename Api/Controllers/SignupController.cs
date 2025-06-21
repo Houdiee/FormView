@@ -11,7 +11,6 @@ namespace Api.Controllers;
 [Route("api/pending/[controller]")]
 public class SignupController(AppDbContext context, IConfiguration configuration, IResend resend) : ControllerBase
 {
-
     private readonly AppDbContext _context = context;
     private readonly IConfiguration _configuration = configuration;
     private readonly IResend _resend = resend;
