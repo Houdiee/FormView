@@ -36,3 +36,17 @@
 /home/kerim/projects/student-forms/Api/obj/Debug/net9.0/Api.pdb
 /home/kerim/projects/student-forms/Api/obj/Debug/net9.0/Api.genruntimeconfig.cache
 /home/kerim/projects/student-forms/Api/obj/Debug/net9.0/ref/Api.dll
+/home/kerim/projects/student-forms/Api/bin/Debug/net9.0/Microsoft.EntityFrameworkCore.dll
+/home/kerim/projects/student-forms/Api/bin/Debug/net9.0/Microsoft.EntityFrameworkCore.Abstractions.dll
+/home/kerim/projects/student-forms/Api/bin/Debug/net9.0/Microsoft.Extensions.Caching.Abstractions.dll
+/home/kerim/projects/student-forms/Api/bin/Debug/net9.0/Microsoft.Extensions.Caching.Memory.dll
+/home/kerim/projects/student-forms/Api/bin/Debug/net9.0/Microsoft.Extensions.DependencyInjection.dll
+/home/kerim/projects/student-forms/Api/bin/Debug/net9.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll
+/home/kerim/projects/student-forms/Api/bin/Debug/net9.0/Microsoft.Extensions.Logging.dll
+/home/kerim/projects/student-forms/Api/bin/Debug/net9.0/Microsoft.Extensions.Logging.Abstractions.dll
+/home/kerim/projects/student-forms/Api/bin/Debug/net9.0/Microsoft.Extensions.Options.dll
+/home/kerim/projects/student-forms/Api/bin/Debug/net9.0/Microsoft.Extensions.Primitives.dll
+/home/kerim/projects/student-forms/Api/bin/Debug/net9.0/Microsoft.EntityFrameworkCore.Relational.dll
+/home/kerim/projects/student-forms/Api/bin/Debug/net9.0/Microsoft.Extensions.Configuration.Abstractions.dll
+/home/kerim/projects/student-forms/Api/bin/Debug/net9.0/Npgsql.dll
+/home/kerim/projects/student-forms/Api/bin/Debug/net9.0/Npgsql.EntityFrameworkCore.PostgreSQL.dll

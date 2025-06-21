@@ -4,24 +4,15 @@ using FluentValidation.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
-builder.Services.AddOpenApi();
-
-// Resend setup
-builder.Services.AddOptions();
-builder.Services.AddHttpClient<ResendClient>();
-builder.Services.Configure<ResendClientOptions>(o =>
+// EF Core setup
+using (var context = new AppDbContext(builder.Configuration))
 {
-    o.ApiToken = builder.Configuration["ResendApiKey"]!;
-});
-builder.Services.AddTransient<IResend, ResendClient>();
+    context.Database.EnsureCreated();
+}
+builder.Services.AddDbContext<AppDbContext>();
 
-// FluentValidation setup
-builder.Services.AddFluentValidationAutoValidation()
-                .AddFluentValidationClientsideAdapters()
-                .AddValidatorsFromAssemblyContaining<Program>();
 
-// CORS
+// CORS setup
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
@@ -33,6 +24,22 @@ builder.Services.AddCors(options =>
     });
 });
 
+// FluentValidation setup
+builder.Services.AddFluentValidationAutoValidation()
+                .AddFluentValidationClientsideAdapters()
+                .AddValidatorsFromAssemblyContaining<Program>();
+
+// Resend setup
+builder.Services.AddOptions();
+builder.Services.AddHttpClient<ResendClient>();
+builder.Services.Configure<ResendClientOptions>(o =>
+{
+    o.ApiToken = builder.Configuration["ResendApiKey"]!;
+});
+builder.Services.AddTransient<IResend, ResendClient>();
+
+builder.Services.AddControllers();
+builder.Services.AddOpenApi();
 
 var app = builder.Build();
 

@@ -2,16 +2,17 @@ using FluentValidation;
 
 namespace Dtos;
 
-public class CreateEmailDto
+public class SignupRequestDto
 {
     public required string FirstName { get; set; }
     public required string LastName { get; set; }
     public required string Email { get; set; }
+    public required string Password { get; set; }
 }
 
-public class CreateEmailDtoValidator : AbstractValidator<CreateEmailDto>
+public class SignupRequestDtoValidator : AbstractValidator<SignupRequestDto>
 {
-    public CreateEmailDtoValidator()
+    public SignupRequestDtoValidator()
     {
         RuleFor(x => x.FirstName)
             .NotNull().WithMessage("First name not provided")
@@ -28,5 +29,10 @@ public class CreateEmailDtoValidator : AbstractValidator<CreateEmailDto>
             .NotEmpty().WithMessage("Email cannot be empty")
             .MaximumLength(128).WithMessage("Email cannot exceed 128 characters")
             .EmailAddress().WithMessage("Invalid email");
+
+        RuleFor(x => x.Password)
+            .NotNull().WithMessage("Password not provided")
+            .NotEmpty().WithMessage("Password cannot be empty")
+            .MaximumLength(128).WithMessage("Password cannot exceed 128 characters");
     }
 }
