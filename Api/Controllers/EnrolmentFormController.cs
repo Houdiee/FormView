@@ -9,7 +9,7 @@ namespace Api.Controllers;
 
 [ApiController]
 [Route("api/forms/[controller]")]
-public class FormsController(AppDbContext context, IResend resend) : ControllerBase
+public class EnrolmentFormController(AppDbContext context, IResend resend) : ControllerBase
 {
     private readonly AppDbContext _context = context;
     private readonly IResend _resend = resend;
@@ -28,7 +28,7 @@ public class FormsController(AppDbContext context, IResend resend) : ControllerB
             Gender = formDto.Gender,
             CountryOfBirth = formDto.CountryOfBirth,
             CountryOfCitizenship = formDto.CountryOfCitizenship,
-            Siblings = formDto.Siblings.Select(s => $"{s.Item1} {s.Item2}").ToList(),
+            Siblings = formDto.Siblings.Select(static s => s.FirstName + ' ' + s.LastName).ToList(),
             CreatedAt = DateTime.Now,
         };
 
@@ -148,7 +148,7 @@ public class FormsController(AppDbContext context, IResend resend) : ControllerB
         existingForm.Gender = formDto.Gender;
         existingForm.CountryOfBirth = formDto.CountryOfBirth;
         existingForm.CountryOfCitizenship = formDto.CountryOfCitizenship;
-        existingForm.Siblings = formDto.Siblings.Select(s => $"{s.Item1} {s.Item2}").ToList();
+        existingForm.Siblings = formDto.Siblings.Select(static s => s.FirstName + ' ' + s.LastName).ToList();
 
         return Ok(existingForm);
     }

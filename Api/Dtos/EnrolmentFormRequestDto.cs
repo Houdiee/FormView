@@ -14,7 +14,13 @@ public class EnrolmentFormRequestDto
     public required string Gender { get; set; }
     public required string CountryOfBirth { get; set; }
     public required string CountryOfCitizenship { get; set; }
-    public required List<(string, string)> Siblings { get; set; }
+    public required List<Sibling> Siblings { get; set; }
+}
+
+public class Sibling
+{
+    public required string FirstName { get; set; }
+    public required string LastName { get; set; }
 }
 
 public class EnrolmentFormRequestDtoValidator : AbstractValidator<EnrolmentFormRequestDto>
@@ -80,12 +86,12 @@ public class EnrolmentFormRequestDtoValidator : AbstractValidator<EnrolmentFormR
 
         RuleForEach(x => x.Siblings).ChildRules(sibling =>
         {
-            sibling.RuleFor(s => s.Item1)
+            sibling.RuleFor(s => s.FirstName)
                 .NotNull().WithMessage("Sibling first name not provided")
                 .NotEmpty().WithMessage("Sibling first name cannot be empty")
                 .Must(name => name.All(char.IsLetter)).WithMessage("Sibling first name should consist of letters");
 
-            sibling.RuleFor(s => s.Item2)
+            sibling.RuleFor(s => s.LastName)
                 .NotNull().WithMessage("Sibling last name not provided")
                 .NotEmpty().WithMessage("Sibling last name cannot be empty")
                 .Must(name => name.All(char.IsLetter)).WithMessage("Sibling last name should consist of letters");
