@@ -1,20 +1,14 @@
 import axios from "axios";
 import { API_BACKEND_URL } from "../main";
+import type { SignupFormValues } from "../components/SignupForm";
 
-type SignupRequest =  {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-}
-
-export default async function signupHandler(req: SignupRequest) {
+export default async function signupHandler(req: SignupFormValues) {
   try {
     await axios.post(`${API_BACKEND_URL}/pending/signup`, {
-      "firstName": req.firstName,
-      "lastName": req.lastName,
-      "email": req.email,
-      "password": req.password,
+      "firstName": req.firstName!,
+      "lastName": req.lastName!,
+      "email": req.email!,
+      "password": req.password!,
     });
   } catch (error) {
     throw error;

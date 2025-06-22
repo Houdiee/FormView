@@ -1,24 +1,52 @@
 // TODO upload photo
-import { Button, DatePicker, Flex, Form, Input, Radio, Select, Upload } from "antd";
+import { Button, DatePicker, Flex, Form, Input, Radio, Select, Upload, type FormProps } from "antd";
 import dayjs from "dayjs";
 import countries from "country-list";
 import getCountryFlag from "country-flag-icons/unicode";
 import { useEffect } from "react";
 import { MinusCircleOutlined, PlusOutlined, UploadOutlined } from "@ant-design/icons";
 import { validateAlphabetical, validateEmail, validateNotEmpty, validateNumerical } from "../util/validator";
+import enrolmentFormHandler from "../handlers/EnrolmentFormHandler";
 
-interface EnrolFormProps {
+interface EnrolmentFormProps {
   onSubmitSuccessful: (isSuccessful: boolean) => void
 }
 
-export default function EnrolForm({ onSubmitSuccessful }: EnrolFormProps) {
+export type EnrolmentFormValues =  {
+  firstName?: string;
+  middleName?: string;
+  lastName?: string;
+  email?: string;
+  dateOfBirth?: string;
+  age?: number;
+  gender?: "male" | "female";
+  countryOfBirth?: string;
+  countryOfCitizenship?: string;
+  siblings?: SiblingFormValues[];
+}
+
+type SiblingFormValues = {
+  firstName?: string;
+  lastName?: string;
+};
+
+export default function EnrolmentForm({ onSubmitSuccessful }: EnrolmentFormProps) {
   const [form] = Form.useForm();
 
   const dateOfBirth = Form.useWatch('date-of-birth', form);
 
-  const onFinish = (values: any) => {
-    console.log(form.getFieldsValue());
-    onSubmitSuccessful(true);
+  const onFinish: FormProps<EnrolmentFormValues>['onFinish'] = async (values) => {
+    try {
+      await enrolmentFormHandler(values);
+      onSubmitSuccessful(true);
+    }
+    catch (error) {
+      console.log(error);
+    }
+  };
+
+  const onFinishFailed: FormProps<EnrolmentFormValues>['onFinishFailed'] = (errorInfo) => {
+    console.log('Failed:', errorInfo);
   };
 
   useEffect(() => {
@@ -38,8 +66,8 @@ export default function EnrolForm({ onSubmitSuccessful }: EnrolFormProps) {
       form={form}
       onFinish={onFinish}
     >
-      <Form.Item
-        name="first-name"
+      <Form.Item<EnrolmentFormValues>
+        name="firstName"
         label="First Name"
         hasFeedback
         rules={validateAlphabetical(true)}
@@ -47,29 +75,29 @@ export default function EnrolForm({ onSubmitSuccessful }: EnrolFormProps) {
         <Input/>
       </Form.Item>
 
-      <Form.Item
-        name="middle-name" label="Middle Name(s)"
+      <Form.Item<EnrolmentFormValues>
+        name="middleName" label="Middle Name(s)"
         hasFeedback
         rules={validateAlphabetical(false)}>
         <Input/>
       </Form.Item>
 
-      <Form.Item
-        name="last-name" label="Last Name"
+      <Form.Item<EnrolmentFormValues>
+        name="lastName" label="Last Name"
         hasFeedback
         rules={validateAlphabetical(true)}>
         <Input/>
       </Form.Item>
 
-      <Form.Item
+      <Form.Item<EnrolmentFormValues>
         name="email" label="Email"
         hasFeedback
         rules={validateEmail(true)}>
         <Input/>
       </Form.Item>
 
-      <Form.Item
-        name="date-of-birth"
+      <Form.Item<EnrolmentFormValues>
+        name="dateOfBirth"
         label="Date of birth"
         rules={validateNotEmpty(true)}
         hasFeedback
@@ -77,7 +105,7 @@ export default function EnrolForm({ onSubmitSuccessful }: EnrolFormProps) {
         <DatePicker disabledDate={current => current > dayjs()} />
       </Form.Item>
 
-      <Form.Item
+      <Form.Item<EnrolmentFormValues>
         name="age"
         label="Age"
         rules={validateNumerical(true)}
@@ -85,7 +113,7 @@ export default function EnrolForm({ onSubmitSuccessful }: EnrolFormProps) {
         <Input/>
       </Form.Item>
 
-      <Form.Item name="gender" label="Gender">
+      <Form.Item<EnrolmentFormValues> name="gender" label="Gender">
         <Radio.Group
           options={[
             { value: "male", label: "Male" },
@@ -94,8 +122,8 @@ export default function EnrolForm({ onSubmitSuccessful }: EnrolFormProps) {
         />
       </Form.Item>
 
-      <Form.Item
-        name="country-of-birth"
+      <Form.Item<EnrolmentFormValues>
+        name="countryOfBirth"
         label="Country of Birth"
         rules={validateNotEmpty(true)}
         hasFeedback
@@ -117,8 +145,8 @@ export default function EnrolForm({ onSubmitSuccessful }: EnrolFormProps) {
         />
       </Form.Item>
 
-      <Form.Item
-        name="country-of-citizenship"
+      <Form.Item<EnrolmentFormValues>
+        name="countryOfCitizenship"
         label="Country of Citizenship"
         rules={validateNotEmpty(true)}
         hasFeedback
@@ -140,7 +168,7 @@ export default function EnrolForm({ onSubmitSuccessful }: EnrolFormProps) {
         />
       </Form.Item>
 
-      <Form.Item
+      <Form.Item<EnrolmentFormValues>
         label="Siblings"
       >
         <Form.List name="siblings">
@@ -148,18 +176,18 @@ export default function EnrolForm({ onSubmitSuccessful }: EnrolFormProps) {
             <>
               {fields.map(({ key, name, ...restField }) => (
                 <Flex align="baseline" gap="small" key={key}>
-                  <Form.Item
+                  <Form.Item<SiblingFormValues>
                     {...restField}
-                    name={[name, "first-name"]}
+                    name={"firstName"}
                     rules={validateAlphabetical(true)}
                     className="flex-grow"
                     hasFeedback
                   >
                     <Input placeholder="First Name" />
                   </Form.Item>
-                  <Form.Item
+                  <Form.Item<SiblingFormValues>
                     {...restField}
-                    name={[name, "last-name"]}
+                    name={"lastName"}
                     rules={validateAlphabetical(true)}
                     className="flex-grow"
                     hasFeedback

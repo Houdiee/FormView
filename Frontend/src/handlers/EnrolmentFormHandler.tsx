@@ -1,19 +1,8 @@
 import axios from "axios";
 import { API_BACKEND_URL } from "../main";
+import type { EnrolmentFormValues } from "../components/EnrolForm";
 
-type EnrolmentFormRequest =  {
-  firstName: string;
-  lastName: string;
-  email: string;
-  dateOfBirth: string;
-  age: number;
-  gender: "male" | "female";
-  countryOfBirth: string;
-  countryOfCitizenship: string;
-  siblings: string[][]
-}
-
-export default async function enrolmentformHandler(req: EnrolmentFormRequest) {
+export default async function enrolmentFormHandler(req: EnrolmentFormValues) {
   try {
     axios.post(`${API_BACKEND_URL}/api/forms/enrolmentform`, {
       "firstName": req.firstName,

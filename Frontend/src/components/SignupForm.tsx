@@ -9,27 +9,22 @@ interface SignupFormProps {
   onFormCompletion: (completed: boolean) => void,
 }
 
-export default function SignupForm({ onFormCompletion }: SignupFormProps) {
-  type FieldType = {
-    firstName?: string;
-    lastName?: string;
-    email?: string;
-    password?: string;
-    confirmPassword?: string;
-  };
+export type SignupFormValues = {
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  password?: string;
+  confirmPassword?: string;
+};
 
+export default function SignupForm({ onFormCompletion }: SignupFormProps) {
   const [form] = Form.useForm();
   const [api, contextHolder] = notification.useNotification();
 
-  const onFinish: FormProps<FieldType>['onFinish'] = async (values) => {
+  const onFinish: FormProps<SignupFormValues>['onFinish'] = async (values) => {
     try {
       if (values.password === values.confirmPassword) {
-        await signupHandler({
-          firstName: values.firstName!,
-          lastName: values.lastName!,
-          email: values.email!,
-          password: values.password!,
-        });
+        await signupHandler(values);
         onFormCompletion(true);
       }
     }
@@ -53,7 +48,7 @@ export default function SignupForm({ onFormCompletion }: SignupFormProps) {
     }
   };
 
-  const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
+  const onFinishFailed: FormProps<SignupFormValues>['onFinishFailed'] = (errorInfo) => {
     console.log('Failed:', errorInfo);
   };
 
@@ -67,7 +62,7 @@ export default function SignupForm({ onFormCompletion }: SignupFormProps) {
         className="w-100"
         autoComplete="off"
       >
-        <Form.Item<FieldType>
+        <Form.Item<SignupFormValues>
           name="firstName"
           hasFeedback
           rules={validateAlphabetical(true)}
@@ -75,7 +70,7 @@ export default function SignupForm({ onFormCompletion }: SignupFormProps) {
           <Input placeholder="First Name" />
         </Form.Item>
 
-        <Form.Item<FieldType>
+        <Form.Item<SignupFormValues>
           name="lastName"
           hasFeedback
           rules={validateAlphabetical(true)}
@@ -83,7 +78,7 @@ export default function SignupForm({ onFormCompletion }: SignupFormProps) {
           <Input placeholder="Last Name" />
         </Form.Item>
 
-        <Form.Item<FieldType>
+        <Form.Item<SignupFormValues>
           name="email"
           hasFeedback
           rules={[
@@ -94,7 +89,7 @@ export default function SignupForm({ onFormCompletion }: SignupFormProps) {
           <Input placeholder="Email" prefix={ <UserOutlined/> } />
         </Form.Item>
 
-        <Form.Item<FieldType>
+        <Form.Item<SignupFormValues>
           name="password"
           hasFeedback
           rules={validateText(true)}
@@ -106,7 +101,7 @@ export default function SignupForm({ onFormCompletion }: SignupFormProps) {
           />
         </Form.Item>
 
-        <Form.Item<FieldType>
+        <Form.Item<SignupFormValues>
           name="confirmPassword"
           dependencies={["password"]}
           hasFeedback
