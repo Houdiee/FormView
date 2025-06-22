@@ -6,10 +6,10 @@ import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { validateAlphabetical, validateText } from "../util/validator";
 
 interface SignupFormProps {
-  onSignupSuccessful: (isSuccessful: boolean) => void,
+  onFormCompletion: (completed: boolean) => void,
 }
 
-export default function SignupForm({ onSignupSuccessful }: SignupFormProps) {
+export default function SignupForm({ onFormCompletion }: SignupFormProps) {
   type FieldType = {
     firstName?: string;
     lastName?: string;
@@ -30,14 +30,20 @@ export default function SignupForm({ onSignupSuccessful }: SignupFormProps) {
           email: values.email!,
           password: values.password!,
         });
-        onSignupSuccessful(true);
+        onFormCompletion(true);
       }
     }
     catch (error) {
       let errorMessage = "An unexpected problem occurred";
 
       if (axios.isAxiosError(error) && error.response?.data.error) {
-        errorMessage = error.response.data.error;
+        if (error.response.data.error === "User has already requested to become an admin") {
+          api["warning"]({
+            message: "Account Already Exists",
+            description: "You have already requested to become an admin",
+          });
+          return;
+        }
       }
 
       api["error"]({

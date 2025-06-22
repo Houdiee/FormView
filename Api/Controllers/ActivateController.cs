@@ -13,17 +13,30 @@ public class ActivateController(AppDbContext context) : ControllerBase
     [HttpGet("{token}")]
     public async Task<IActionResult> ActivateAccountToAdmin(Guid token)
     {
-        User? existingUser = await _context.Users.FirstOrDefaultAsync(u => u.ActivationToken == token);
-        if (existingUser == null)
+        User? user = await _context.Users.FirstOrDefaultAsync(u => u.ActivationToken == token);
+        if (user == null)
         {
             return BadRequest(new { error = "User not found" });
         }
 
-        existingUser.Status = Status.Accepted;
-        existingUser.ActivationToken = null;
+        user.Status = Status.Accepted;
+        user.ActivationToken = null;
 
-        _context.Users.Update(existingUser);
+        _context.Users.Update(user);
 
-        return Ok(new { message = "User account activated successfully with admin access" });
+        try
+        {
+            await _context.SaveChangesAsync();
+            return Ok(new { message = "User account activated successfully with admin access" });
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Error: {e}");
+            return StatusCode(StatusCodes.Status500InternalServerError, new
+            {
+                error = "An unexpected problem occurred"
+            });
+        }
+
     }
 }

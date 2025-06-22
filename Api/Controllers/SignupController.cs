@@ -1,4 +1,3 @@
-using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Resend;
@@ -21,7 +20,7 @@ public class SignupController(AppDbContext context, IConfiguration configuration
         User? existingUser = await _context.Users.FirstOrDefaultAsync(u => u.Email == req.Email);
         if (existingUser != null && existingUser.Status == Status.Pending)
         {
-            return Conflict("User has already requested to become an admin");
+            return Conflict(new { error = "User has already requested to become an admin" });
         }
 
         User newUser = new()
@@ -55,7 +54,7 @@ public class SignupController(AppDbContext context, IConfiguration configuration
         catch (Exception e)
         {
             Console.WriteLine($"Error: {e}");
-            return StatusCode((int)HttpStatusCode.InternalServerError, new
+            return StatusCode(StatusCodes.Status500InternalServerError, new
             {
                 error = "An unexpected problem occurred",
             });
