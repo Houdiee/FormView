@@ -61,15 +61,62 @@ public class FormsController(AppDbContext context, IResend resend) : ControllerB
     }
 
     [HttpGet("enrolment")]
-    public async Task<IActionResult> ListAllEnrolmentForms(string filter = "default")
+    public async Task<IActionResult> ListAllEnrolmentForms(
+        [FromQuery] string sortBy = "createdAt",
+        [FromQuery] string sortOrder = "desc",
+        [FromQuery] string? search = null
+    )
     {
-        List<EnrolmentForm> enrolmentForms = _context.EnrolmentForms.ToList();
+        IQueryable<EnrolmentForm> query = _context.EnrolmentForms;
 
-        switch (filter)
+        if (!string.IsNullOrEmpty(search))
         {
-            case "default":
-                enrolmentForms.OrderBy(f => f.);
+            query = query.Where(f =>
+                f.FirstName.Contains(search, StringComparison.OrdinalIgnoreCase)
+                ||
+                f.MiddleName.Contains(search, StringComparison.OrdinalIgnoreCase)
+                ||
+                f.LastName.Contains(search, StringComparison.OrdinalIgnoreCase)
+                ||
+                f.Email.Contains(search, StringComparison.OrdinalIgnoreCase)
+            );
+        }
+
+        bool isDescending = sortOrder == "desc";
+        switch (sortBy)
+        {
+            case "firstname":
+                query = isDescending ? query.OrderByDescending(f => f.FirstName) : query.OrderBy(f => f.FirstName);
+                break;
+            case "lastname":
+                query = isDescending ? query.OrderByDescending(f => f.LastName) : query.OrderBy(f => f.LastName);
+                break;
+            case "email":
+                query = isDescending ? query.OrderByDescending(f => f.Email) : query.OrderBy(f => f.Email);
+                break;
+            case "age":
+                query = isDescending ? query.OrderByDescending(f => f.Age) : query.OrderBy(f => f.Age);
+                break;
+            case "gender":
+                query = isDescending ? query.OrderByDescending(f => f.Gender) : query.OrderBy(f => f.Gender);
+                break;
+            case "countryofbirth":
+                query = isDescending ? query.OrderByDescending(f => f.CountryOfBirth) : query.OrderBy(f => f.CountryOfBirth);
+                break;
+            case "countryofcitizenship":
+                query = isDescending ? query.OrderByDescending(f => f.CountryOfCitizenship) : query.OrderBy(f => f.CountryOfCitizenship);
+                break;
+            case "dateofbirth":
+                query = isDescending ? query.OrderByDescending(f => f.DateOfBirth) : query.OrderBy(f => f.DateOfBirth);
+                break;
+            case "createdat":
+            default:
+                query = isDescending ? query.OrderByDescending(f => f.CreatedAt) : query.OrderBy(f => f.CreatedAt);
                 break;
         }
+
+        List<EnrolmentForm> enrolmentForms = await query.ToListAsync();
+
+        return Ok(enrolmentForms);
     }
 }
