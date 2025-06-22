@@ -16,6 +16,6 @@ public class EnrolmentForm
     public required string Gender { get; set; }
     public required string CountryOfBirth { get; set; }
     public required string CountryOfCitizenship { get; set; }
-    public required List<(string, string)> Siblings { get; set; }
+    public required List<string[]> Siblings { get; set; }
     public required DateTime CreatedAt { get; set; }
 }

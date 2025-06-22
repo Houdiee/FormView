@@ -1,4 +1,5 @@
 using FluentValidation;
+using System.Globalization;
 
 namespace Dtos;
 
@@ -13,7 +14,7 @@ public class EnrolmentFormRequestDto
     public required string Gender { get; set; }
     public required string CountryOfBirth { get; set; }
     public required string CountryOfCitizenship { get; set; }
-    public required List<(string, string)> Siblings { get; set; }
+    public required List<string[]> Siblings { get; set; }
 }
 
 public class EnrolmentFormRequestDtoValidator : AbstractValidator<EnrolmentFormRequestDto>
@@ -46,7 +47,19 @@ public class EnrolmentFormRequestDtoValidator : AbstractValidator<EnrolmentFormR
 
         RuleFor(x => x.DateOfBirth)
             .NotNull().WithMessage("Date of birth not provided")
-            .NotEmpty().WithMessage("Date of birth cannot be empty");
+            .NotEmpty().WithMessage("Date of birth cannot be empty")
+            .Must(date =>
+            {
+                if (DateTime.TryParseExact(date, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out _))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            })
+            .WithMessage("Invalid date format");
 
         RuleFor(x => x.Age)
             .NotNull().WithMessage("Age not provided")
@@ -67,12 +80,12 @@ public class EnrolmentFormRequestDtoValidator : AbstractValidator<EnrolmentFormR
 
         RuleForEach(x => x.Siblings).ChildRules(sibling =>
         {
-            sibling.RuleFor(s => s.Item1)
+            sibling.RuleFor(s => s[0])
                 .NotNull().WithMessage("Sibling first name not provided")
                 .NotEmpty().WithMessage("Sibling first name cannot be empty")
                 .Must(name => name.All(char.IsLetter)).WithMessage("Sibling first name should consist of letters");
 
-            sibling.RuleFor(s => s.Item2)
+            sibling.RuleFor(s => s[1])
                 .NotNull().WithMessage("Sibling last name not provided")
                 .NotEmpty().WithMessage("Sibling last name cannot be empty")
                 .Must(name => name.All(char.IsLetter)).WithMessage("Sibling last name should consist of letters");
