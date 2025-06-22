@@ -5,7 +5,7 @@ import countries from "country-list";
 import getCountryFlag from "country-flag-icons/unicode";
 import { useEffect } from "react";
 import { MinusCircleOutlined, PlusOutlined, UploadOutlined } from "@ant-design/icons";
-import { validateAlphabetical, validateNotEmpty, validateNumerical } from "../util/validator";
+import { validateAlphabetical, validateEmail, validateNotEmpty, validateNumerical } from "../util/validator";
 
 interface EnrolFormProps {
   onSubmitSuccessful: (isSuccessful: boolean) => void
@@ -17,6 +17,7 @@ export default function EnrolForm({ onSubmitSuccessful }: EnrolFormProps) {
   const dateOfBirth = Form.useWatch('date-of-birth', form);
 
   const onFinish = (values: any) => {
+    console.log(form.getFieldsValue());
     onSubmitSuccessful(true);
   };
 
@@ -57,6 +58,13 @@ export default function EnrolForm({ onSubmitSuccessful }: EnrolFormProps) {
         name="last-name" label="Last Name"
         hasFeedback
         rules={validateAlphabetical(true)}>
+        <Input/>
+      </Form.Item>
+
+      <Form.Item
+        name="email" label="Email"
+        hasFeedback
+        rules={validateEmail(true)}>
         <Input/>
       </Form.Item>
 

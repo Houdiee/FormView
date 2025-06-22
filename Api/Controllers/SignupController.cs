@@ -39,7 +39,7 @@ public class SignupController(AppDbContext context, IConfiguration configuration
         EmailMessage email = new()
         {
             From = "onboarding@resend.dev",
-            To = _configuration["OwnerEmail"]!,
+            To = newUser.Email,
             Subject = $"{req.FirstName} {req.LastName} is requesting admin access",
             HtmlBody = $"<p>Click <a href={accessLink}>here</a> to grant {req.Email} admin access.</p>",
         };
