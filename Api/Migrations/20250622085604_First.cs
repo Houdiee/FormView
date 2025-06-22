@@ -8,7 +8,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Api.Migrations
 {
     /// <inheritdoc />
-    public partial class EnrolmentForms : Migration
+    public partial class First : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -28,7 +28,7 @@ namespace Api.Migrations
                     Gender = table.Column<string>(type: "text", nullable: false),
                     CountryOfBirth = table.Column<string>(type: "text", nullable: false),
                     CountryOfCitizenship = table.Column<string>(type: "text", nullable: false),
-                    Siblings = table.Column<List<ValueTuple<string, string>>>(type: "record[]", nullable: false),
+                    Siblings = table.Column<List<string>>(type: "text[]", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>

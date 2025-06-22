@@ -8,27 +8,27 @@ using Dtos;
 namespace Api.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/forms/[controller]")]
 public class FormsController(AppDbContext context, IResend resend) : ControllerBase
 {
     private readonly AppDbContext _context = context;
     private readonly IResend _resend = resend;
 
-    [HttpPost("enrolment")]
-    public async Task<IActionResult> SaveEnrolmentFormToDb([FromBody] EnrolmentFormRequestDto form)
+    [HttpPost]
+    public async Task<IActionResult> SaveEnrolmentFormToDb([FromBody] EnrolmentFormRequestDto formDto)
     {
         EnrolmentForm enrolmentForm = new()
         {
-            FirstName = form.FirstName,
-            MiddleName = form.MiddleName ?? string.Empty,
-            LastName = form.LastName,
-            Email = form.Email,
-            DateOfBirth = DateTime.ParseExact(form.DateOfBirth, "dd/MM/yyyy", CultureInfo.InvariantCulture),
-            Age = form.Age,
-            Gender = form.Gender,
-            CountryOfBirth = form.CountryOfBirth,
-            CountryOfCitizenship = form.CountryOfCitizenship,
-            Siblings = form.Siblings,
+            FirstName = formDto.FirstName,
+            MiddleName = formDto.MiddleName ?? string.Empty,
+            LastName = formDto.LastName,
+            Email = formDto.Email,
+            DateOfBirth = DateTime.ParseExact(formDto.DateOfBirth, "dd/MM/yyyy", CultureInfo.InvariantCulture),
+            Age = formDto.Age,
+            Gender = formDto.Gender,
+            CountryOfBirth = formDto.CountryOfBirth,
+            CountryOfCitizenship = formDto.CountryOfCitizenship,
+            Siblings = formDto.Siblings.Select(s => $"{s.Item1} {s.Item2}").ToList(),
             CreatedAt = DateTime.Now,
         };
 
@@ -37,7 +37,7 @@ public class FormsController(AppDbContext context, IResend resend) : ControllerB
         EmailMessage email = new()
         {
             From = "onboarding@resend.dev",
-            To = form.Email,
+            To = formDto.Email,
             Subject = "We have received your enrolment form",
             HtmlBody = "<p>Your enrolment is currently up for review.</p>",
         };
@@ -60,7 +60,7 @@ public class FormsController(AppDbContext context, IResend resend) : ControllerB
         }
     }
 
-    [HttpGet("enrolment")]
+    [HttpGet]
     public async Task<IActionResult> ListAllEnrolmentForms(
         [FromQuery] string sortBy = "createdAt",
         [FromQuery] string sortOrder = "desc",
@@ -118,5 +118,38 @@ public class FormsController(AppDbContext context, IResend resend) : ControllerB
         List<EnrolmentForm> enrolmentForms = await query.ToListAsync();
 
         return Ok(enrolmentForms);
+    }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetFormById(int id)
+    {
+        EnrolmentForm? form = await _context.EnrolmentForms.FindAsync(id);
+        if (form == null)
+        {
+            return BadRequest(new { error = "Form does not exist" });
+        }
+
+        return Ok(form);
+    }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateForm(int id, [FromBody] EnrolmentFormRequestDto formDto)
+    {
+        EnrolmentForm? existingForm = await _context.EnrolmentForms.FindAsync(id);
+        if (existingForm == null)
+        {
+            return BadRequest(new { error = "Form does not exist" });
+        }
+
+        existingForm.FirstName = formDto.FirstName;
+        existingForm.MiddleName = formDto.MiddleName ?? "";
+        existingForm.LastName = formDto.LastName;
+        existingForm.Email = formDto.Email;
+        existingForm.Gender = formDto.Gender;
+        existingForm.CountryOfBirth = formDto.CountryOfBirth;
+        existingForm.CountryOfCitizenship = formDto.CountryOfCitizenship;
+        existingForm.Siblings = formDto.Siblings.Select(s => $"{s.Item1} {s.Item2}").ToList();
+
+        return Ok(existingForm);
     }
 }

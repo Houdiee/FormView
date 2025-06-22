@@ -67,9 +67,9 @@ namespace Api.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.PrimitiveCollection<List<ValueTuple<string, string>>>("Siblings")
+                    b.PrimitiveCollection<List<string>>("Siblings")
                         .IsRequired()
-                        .HasColumnType("record[]");
+                        .HasColumnType("text[]");
 
                     b.HasKey("Id");
 

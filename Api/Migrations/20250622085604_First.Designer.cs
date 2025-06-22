@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250622073012_EnrolmentForms")]
-    partial class EnrolmentForms
+    [Migration("20250622085604_First")]
+    partial class First
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -70,9 +70,9 @@ namespace Api.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.PrimitiveCollection<List<ValueTuple<string, string>>>("Siblings")
+                    b.PrimitiveCollection<List<string>>("Siblings")
                         .IsRequired()
-                        .HasColumnType("record[]");
+                        .HasColumnType("text[]");
 
                     b.HasKey("Id");
 
