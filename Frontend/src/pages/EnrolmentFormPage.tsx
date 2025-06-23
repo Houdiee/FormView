@@ -1,5 +1,5 @@
 import { Card, Flex, Result } from "antd";
-import StudentForm from "../components/EnrolForm";
+import StudentForm from "../components/enrolment_form/EnrolmentForm";
 import { useState } from "react";
 
 export default function EnrolFormPage() {

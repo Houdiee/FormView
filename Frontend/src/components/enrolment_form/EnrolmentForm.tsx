@@ -5,8 +5,8 @@ import countries from "country-list";
 import getCountryFlag from "country-flag-icons/unicode";
 import { useEffect } from "react";
 import { MinusCircleOutlined, PlusOutlined, UploadOutlined } from "@ant-design/icons";
-import { validateAlphabetical, validateEmail, validateNotEmpty, validateNumerical } from "../common/validator";
-import enrolmentFormHandler from "../handlers/EnrolmentFormHandler";
+import { validateAlphabetical, validateEmail, validateNotEmpty, validateNumerical } from "../../common/validator";
+import enrolmentFormHandler from "../../handlers/EnrolmentFormHandler";
 
 interface EnrolmentFormProps {
   onSubmitSuccessful: (isSuccessful: boolean) => void

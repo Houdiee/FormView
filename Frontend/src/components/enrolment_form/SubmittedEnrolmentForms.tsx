@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
-import { type EnrolmentPayload } from "../handlers/EnrolmentFormHandler";
+import { type EnrolmentPayload } from "../../handlers/EnrolmentFormHandler";
 import axios from "axios";
-import { API_BACKEND_URL } from "../main";
-import { Table, type TableProps } from "antd";
+import { API_BACKEND_URL } from "../../main";
+import { Flex, Table } from "antd";
 import countries from "country-list";
 import dayjs from "dayjs";
+import Search from "antd/es/input/Search";
 
-export default function SubmittedEnrolmentFormsList() {
+export default function SubmittedEnrolmentForms() {
   const [forms, setForms] = useState<EnrolmentPayload[]>([])
+  const [search, setSearch] = useState("");
 
   const columns = [
     {
@@ -77,7 +79,7 @@ export default function SubmittedEnrolmentFormsList() {
   useEffect(() => {
     const fetchForms = async () => {
       try {
-        const response = await axios.get<EnrolmentPayload[]>(`${API_BACKEND_URL}/forms/enrolment`);
+        const response = await axios.get<EnrolmentPayload[]>(`${API_BACKEND_URL}/forms/enrolment?search=${encodeURIComponent(search)}`);
         setForms(response.data);
       } catch (error) {
         console.log(error);
@@ -85,11 +87,23 @@ export default function SubmittedEnrolmentFormsList() {
     }
 
     fetchForms();
-  }, []);
+  }, [search]);
 
   return (
     <>
-      <Table dataSource={forms} columns={columns}/>
+      <Flex vertical>
+        <Search
+          placeholder="Search by name or email"
+          allowClear
+          enterButton="Search"
+          size="large"
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+          onSearch={e => setSearch(e)}
+          style={{ maxWidth: 500 }}
+        />
+        <Table size="small" dataSource={forms} columns={columns}/>
+      </Flex>
     </>
   );
 }
