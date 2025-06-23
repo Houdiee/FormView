@@ -15,7 +15,7 @@ export type EnrolmentPayload = {
   siblings: SiblingFormValues[];
 }
 
-export default async function enrolmentFormHandler(req: EnrolmentFormValues) {
+export default async function enrolmentFormHandler(req: EnrolmentFormValues, method: "POST" | "PUT", id?: number) {
   try {
     const payload: EnrolmentPayload = {
       firstName: req.firstName!,
@@ -23,14 +23,28 @@ export default async function enrolmentFormHandler(req: EnrolmentFormValues) {
       lastName: req.lastName!,
       email: req.email!,
       dateOfBirth: req.dateOfBirth!.format("DD/MM/YYYY"),
-      age: parseInt(req.age!, 10),
+      age: parseInt(req.age!),
       gender: req.gender!,
       countryOfBirth: req.countryOfBirth!,
       countryOfCitizenship: req.countryOfCitizenship!,
       siblings: req.siblings || [],
     };
 
-    await axios.post(`${API_BACKEND_URL}/forms/enrolment`, payload);
+    let response;
+    switch (method) {
+      case "POST":
+        response = await axios.post(`${API_BACKEND_URL}/forms/enrolments`, payload);
+        break;
+
+      case "PUT":
+        response = await axios.put(`${API_BACKEND_URL}/forms/enrolments/${id}`, payload);
+        break;
+
+      default:
+        throw new Error(`Invalid HTTP method: ${method}`);
+    }
+    return response;
+
   } catch (error) {
     throw error;
   }

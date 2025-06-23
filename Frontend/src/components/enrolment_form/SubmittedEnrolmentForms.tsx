@@ -81,7 +81,7 @@ export default function SubmittedEnrolmentForms() {
   useEffect(() => {
     const fetchForms = async () => {
       try {
-        const response = await axios.get<EnrolmentPayload[]>(`${API_BACKEND_URL}/forms/enrolment?search=${encodeURIComponent(search)}`);
+        const response = await axios.get<EnrolmentPayload[]>(`${API_BACKEND_URL}/forms/enrolments?search=${encodeURIComponent(search)}`);
         setForms(response.data);
       } catch (error) {
         console.log(error);

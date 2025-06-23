@@ -8,7 +8,7 @@ using Dtos;
 namespace Api.Controllers;
 
 [ApiController]
-[Route("api/forms/enrolment")]
+[Route("api/forms/enrolments")]
 public class EnrolmentFormController(AppDbContext context, IResend resend) : ControllerBase
 {
     private readonly AppDbContext _context = context;

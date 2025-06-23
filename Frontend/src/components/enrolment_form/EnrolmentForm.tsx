@@ -7,9 +7,12 @@ import { useEffect } from "react";
 import { MinusCircleOutlined, PlusOutlined, UploadOutlined } from "@ant-design/icons";
 import { validateAlphabetical, validateEmail, validateNotEmpty, validateNumerical } from "../../common/validator";
 import enrolmentFormHandler from "../../handlers/EnrolmentFormHandler";
+import axios from "axios";
+import { API_BACKEND_URL } from "../../main";
 
 interface EnrolmentFormProps {
   onSubmitSuccessful: (isSuccessful: boolean) => void
+  formId?: number,
 }
 
 export type EnrolmentFormValues =  {
@@ -23,6 +26,7 @@ export type EnrolmentFormValues =  {
   countryOfBirth?: string;
   countryOfCitizenship?: string;
   siblings?: SiblingFormValues[];
+  id?: string;
 }
 
 export type SiblingFormValues = {
@@ -30,7 +34,7 @@ export type SiblingFormValues = {
   lastName?: string;
 };
 
-export default function EnrolmentForm({ onSubmitSuccessful }: EnrolmentFormProps) {
+export default function EnrolmentForm({ formId, onSubmitSuccessful }: EnrolmentFormProps) {
   const [form] = Form.useForm();
   const [api, contextHolder] = notification.useNotification();
 
@@ -38,8 +42,17 @@ export default function EnrolmentForm({ onSubmitSuccessful }: EnrolmentFormProps
 
   const onFinish: FormProps<EnrolmentFormValues>['onFinish'] = async (values) => {
     try {
-      await enrolmentFormHandler(values);
-      onSubmitSuccessful(true);
+      if (formId !== undefined && formId !== null) {
+        await enrolmentFormHandler(values, "PUT", formId);
+        api["success"]({
+          message: "Form updated",
+          description: "The form has been updated",
+        });
+      }
+      else {
+        await enrolmentFormHandler(values, "POST");
+        onSubmitSuccessful(true);
+      }
     }
     catch (error) {
       api["error"]({
@@ -53,6 +66,31 @@ export default function EnrolmentForm({ onSubmitSuccessful }: EnrolmentFormProps
   const onFinishFailed: FormProps<EnrolmentFormValues>['onFinishFailed'] = (errorInfo) => {
     console.log('Failed:', errorInfo);
   };
+
+  useEffect(() => {
+    const fetchFormData = async () => {
+      if (!formId) {
+        return;
+      }
+
+      try {
+        const response = await axios.get(`${API_BACKEND_URL}/forms/enrolments/${formId}`);
+        const fetchedData = response.data;
+        const transformedData: EnrolmentFormValues = {
+          ...fetchedData,
+          dateOfBirth: fetchedData.dateOfBirth ? dayjs(fetchedData.dateOfBirth) : undefined,
+        };
+        form.setFieldsValue(transformedData);
+      } catch (error) {
+        api.error({
+          message: "Error loading form",
+          description: "Could not load the existing form data.",
+        });
+      }
+    };
+
+    fetchFormData();
+  });
 
   useEffect(() => {
     if (dateOfBirth) {
@@ -226,7 +264,7 @@ export default function EnrolmentForm({ onSubmitSuccessful }: EnrolmentFormProps
 
       <Flex justify="end">
         <Form.Item>
-          <Button htmlType="submit" type="primary">Submit</Button>
+            <Button htmlType="submit" type="primary">{formId ? "Update" : "Submit"}</Button>
         </Form.Item>
       </Flex>
 
