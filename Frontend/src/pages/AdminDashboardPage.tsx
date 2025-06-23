@@ -41,8 +41,7 @@ export default function AdminDashboardPage() {
                 </Link>
               </List.Item>
             }
-          >
-          </List>
+          />
         </Card>
       </Flex>
     </>

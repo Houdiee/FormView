@@ -1,5 +1,5 @@
 import { Card, Flex } from "antd";
-import SubmittedFormsList from "../components/SubmittedFormsList";
+import SubmittedFormsList from "../components/SubmittedEnrolmentFormsList";
 
 export default function AdminEnrolmentFormPage() {
   return (
