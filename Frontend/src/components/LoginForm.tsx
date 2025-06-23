@@ -1,7 +1,7 @@
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Form, Input, type FormProps } from "antd";
 import { Link } from "react-router";
-import { validateEmail, validateText } from "../util/validator";
+import { validateEmail, validateText } from "../common/validator";
 
 export default function LoginForm() {
   type FieldType = {

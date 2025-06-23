@@ -5,7 +5,7 @@ import countries from "country-list";
 import getCountryFlag from "country-flag-icons/unicode";
 import { useEffect } from "react";
 import { MinusCircleOutlined, PlusOutlined, UploadOutlined } from "@ant-design/icons";
-import { validateAlphabetical, validateEmail, validateNotEmpty, validateNumerical } from "../util/validator";
+import { validateAlphabetical, validateEmail, validateNotEmpty, validateNumerical } from "../common/validator";
 import enrolmentFormHandler from "../handlers/EnrolmentFormHandler";
 
 interface EnrolmentFormProps {
@@ -25,7 +25,7 @@ export type EnrolmentFormValues =  {
   siblings?: SiblingFormValues[];
 }
 
-type SiblingFormValues = {
+export type SiblingFormValues = {
   firstName?: string;
   lastName?: string;
 };

@@ -3,7 +3,7 @@ import { Link } from "react-router";
 import signupHandler from "../handlers/SignupHandler";
 import axios, { HttpStatusCode } from "axios";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import { validateAlphabetical, validateText } from "../util/validator";
+import { validateAlphabetical, validateText } from "../common/validator";
 
 interface SignupFormProps {
   onFormCompletion: (completed: boolean) => void,

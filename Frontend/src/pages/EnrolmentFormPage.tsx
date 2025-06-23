@@ -11,7 +11,7 @@ export default function EnrolFormPage() {
 
   return (
     <>
-      <Flex justify="center" align="flex-start" className="!mt-10">
+      <Flex className="justify-center !mt-15">
           <Card className="w-200">
             {success ?
               <Result
