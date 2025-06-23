@@ -34,7 +34,6 @@ public class EnrolmentFormRequestDtoValidator : AbstractValidator<EnrolmentFormR
             .Must(name => name.All(char.IsLetter)).WithMessage("First name should consist of letters");
 
         RuleFor(x => x.MiddleName)
-            .NotNull().WithMessage("Middle name not provided")
             .NotEmpty().WithMessage("Middle name cannot be empty")
             .MaximumLength(128).WithMessage("Middle name cannot exceed 128 characters")
             .Must(name => name.All(char.IsLetter)).WithMessage("Middle name should consist of letters");
@@ -45,7 +44,7 @@ public class EnrolmentFormRequestDtoValidator : AbstractValidator<EnrolmentFormR
             .MaximumLength(128).WithMessage("Last name cannot exceed 128 characters")
             .Must(name => name.All(char.IsLetter)).WithMessage("Last name should consist of letters");
 
-        RuleFor(x => x.LastName)
+        RuleFor(x => x.Email)
             .NotNull().WithMessage("Email not provided")
             .NotEmpty().WithMessage("Email cannot be empty")
             .MaximumLength(128).WithMessage("Email cannot exceed 128 characters")
@@ -68,8 +67,7 @@ public class EnrolmentFormRequestDtoValidator : AbstractValidator<EnrolmentFormR
             .WithMessage("Invalid date format");
 
         RuleFor(x => x.Age)
-            .NotNull().WithMessage("Age not provided")
-            .NotEmpty().WithMessage("Age cannot be empty");
+            .NotNull().WithMessage("Age not provided");
 
         RuleFor(x => x.Gender)
             .Must(gender => gender == "male" || gender == "female").WithMessage("Unknown gender");

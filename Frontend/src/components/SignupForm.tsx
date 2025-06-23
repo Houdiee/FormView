@@ -1,7 +1,7 @@
 import { Button, Form, Input, notification, type FormProps } from "antd";
 import { Link } from "react-router";
 import signupHandler from "../handlers/SignupHandler";
-import axios from "axios";
+import axios, { HttpStatusCode } from "axios";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { validateAlphabetical, validateText } from "../util/validator";
 
@@ -32,7 +32,7 @@ export default function SignupForm({ onFormCompletion }: SignupFormProps) {
       let errorMessage = "An unexpected problem occurred";
 
       if (axios.isAxiosError(error) && error.response?.data.error) {
-        if (error.response.data.error === "User has already requested to become an admin") {
+        if (error.status === HttpStatusCode.BadRequest) {
           api["warning"]({
             message: "Account Already Exists",
             description: "You have already requested to become an admin",

@@ -1,5 +1,5 @@
 // TODO upload photo
-import { Button, DatePicker, Flex, Form, Input, Radio, Select, Upload, type FormProps } from "antd";
+import { Button, DatePicker, Flex, Form, Input, notification, Radio, Select, Upload, type FormProps } from "antd";
 import dayjs from "dayjs";
 import countries from "country-list";
 import getCountryFlag from "country-flag-icons/unicode";
@@ -17,8 +17,8 @@ export type EnrolmentFormValues =  {
   middleName?: string;
   lastName?: string;
   email?: string;
-  dateOfBirth?: string;
-  age?: number;
+  dateOfBirth?: dayjs.Dayjs;
+  age?: string;
   gender?: "male" | "female";
   countryOfBirth?: string;
   countryOfCitizenship?: string;
@@ -32,8 +32,9 @@ type SiblingFormValues = {
 
 export default function EnrolmentForm({ onSubmitSuccessful }: EnrolmentFormProps) {
   const [form] = Form.useForm();
+  const [api, contextHolder] = notification.useNotification();
 
-  const dateOfBirth = Form.useWatch('date-of-birth', form);
+  const dateOfBirth = Form.useWatch("dateOfBirth", form);
 
   const onFinish: FormProps<EnrolmentFormValues>['onFinish'] = async (values) => {
     try {
@@ -41,6 +42,10 @@ export default function EnrolmentForm({ onSubmitSuccessful }: EnrolmentFormProps
       onSubmitSuccessful(true);
     }
     catch (error) {
+      api["error"]({
+        message: "Submission failed",
+        description: "An unexpected problem occurred",
+      });
       console.log(error);
     }
   };
@@ -60,6 +65,8 @@ export default function EnrolmentForm({ onSubmitSuccessful }: EnrolmentFormProps
   }, [dateOfBirth, form]);
 
   return (
+  <>
+    {contextHolder}
     <Form
       labelCol={{ span: 5 }}
       scrollToFirstError
@@ -224,5 +231,7 @@ export default function EnrolmentForm({ onSubmitSuccessful }: EnrolmentFormProps
       </Flex>
 
     </Form>
+
+  </>
   );
 }

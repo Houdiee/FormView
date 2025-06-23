@@ -11,7 +11,7 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
       <Routes>
-        <Route path="/forms/enrolmentform" element={ <EnrolmentFormPage/> }/>
+        <Route path="/forms/enrolment" element={ <EnrolmentFormPage/> }/>
         <Route path="/login" element={ <LoginPage/> }/>
         <Route path="/signup" element={ <SignupPage/> }/>
       </Routes>

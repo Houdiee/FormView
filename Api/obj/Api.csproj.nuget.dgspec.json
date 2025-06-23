@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/kerim/projects/student-forms/Api/Api.csproj": {}
+    "/home/kerim/projects/FormView/Api/Api.csproj": {}
   },
   "projects": {
-    "/home/kerim/projects/student-forms/Api/Api.csproj": {
+    "/home/kerim/projects/FormView/Api/Api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/kerim/projects/student-forms/Api/Api.csproj",
+        "projectUniqueName": "/home/kerim/projects/FormView/Api/Api.csproj",
         "projectName": "Api",
-        "projectPath": "/home/kerim/projects/student-forms/Api/Api.csproj",
+        "projectPath": "/home/kerim/projects/FormView/Api/Api.csproj",
         "packagesPath": "/home/kerim/.nuget/packages/",
-        "outputPath": "/home/kerim/projects/student-forms/Api/obj/",
+        "outputPath": "/home/kerim/projects/FormView/Api/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/kerim/.nuget/NuGet/NuGet.Config"

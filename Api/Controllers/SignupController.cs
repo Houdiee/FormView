@@ -20,7 +20,7 @@ public class SignupController(AppDbContext context, IConfiguration configuration
         User? existingUser = await _context.Users.FirstOrDefaultAsync(u => u.Email == req.Email);
         if (existingUser != null && existingUser.Status == Status.Pending)
         {
-            return Conflict(new { error = "User has already requested to become an admin" });
+            return BadRequest(new { error = "User has already requested to become an admin" });
         }
 
         User newUser = new()
@@ -38,8 +38,8 @@ public class SignupController(AppDbContext context, IConfiguration configuration
 
         EmailMessage email = new()
         {
-            From = "onboarding@resend.dev",
-            To = newUser.Email,
+            From = "no-reply@formview.org",
+            To = _configuration["OwnerEmail"]!,
             Subject = $"{req.FirstName} {req.LastName} is requesting admin access",
             HtmlBody = $"<p>Click <a href={accessLink}>here</a> to grant {req.Email} admin access.</p>",
         };

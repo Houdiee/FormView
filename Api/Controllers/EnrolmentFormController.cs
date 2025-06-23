@@ -8,7 +8,7 @@ using Dtos;
 namespace Api.Controllers;
 
 [ApiController]
-[Route("api/forms/[controller]")]
+[Route("api/forms/enrolment")]
 public class EnrolmentFormController(AppDbContext context, IResend resend) : ControllerBase
 {
     private readonly AppDbContext _context = context;
@@ -23,20 +23,20 @@ public class EnrolmentFormController(AppDbContext context, IResend resend) : Con
             MiddleName = formDto.MiddleName ?? string.Empty,
             LastName = formDto.LastName,
             Email = formDto.Email,
-            DateOfBirth = DateTime.ParseExact(formDto.DateOfBirth, "dd/MM/yyyy", CultureInfo.InvariantCulture),
+            DateOfBirth = DateTime.ParseExact(formDto.DateOfBirth, "dd/MM/yyyy", CultureInfo.InvariantCulture).ToUniversalTime(),
             Age = formDto.Age,
             Gender = formDto.Gender,
             CountryOfBirth = formDto.CountryOfBirth,
             CountryOfCitizenship = formDto.CountryOfCitizenship,
             Siblings = formDto.Siblings.Select(static s => s.FirstName + ' ' + s.LastName).ToList(),
-            CreatedAt = DateTime.Now,
+            CreatedAt = DateTime.Now.ToUniversalTime(),
         };
 
         await _context.EnrolmentForms.AddAsync(enrolmentForm);
 
         EmailMessage email = new()
         {
-            From = "onboarding@resend.dev",
+            From = "no-reply@formview.org",
             To = formDto.Email,
             Subject = "We have received your enrolment form",
             HtmlBody = "<p>Your enrolment is currently up for review.</p>",
@@ -47,7 +47,7 @@ public class EnrolmentFormController(AppDbContext context, IResend resend) : Con
 
         try
         {
-            await Task.WhenAll(saveToDbTask, sendEmailTask);
+            await Task.WhenAll(sendEmailTask, saveToDbTask);
             return Ok(new { message = "Form uploaded successfully" });
         }
         catch (Exception e)

@@ -4,16 +4,17 @@ import type { EnrolmentFormValues } from "../components/EnrolForm";
 
 export default async function enrolmentFormHandler(req: EnrolmentFormValues) {
   try {
-    axios.post(`${API_BACKEND_URL}/api/forms/enrolmentform`, {
+    await axios.post(`${API_BACKEND_URL}/forms/enrolment`, {
       "firstName": req.firstName,
+      "middleName": req.middleName || null,
       "lastName": req.lastName,
       "email": req.email,
-      "dateOfBirth": req.dateOfBirth,
-      "age": req.age,
+      "dateOfBirth": req.dateOfBirth!.format("DD/MM/YYYY"),
+      "age": parseInt(req.age!, 10),
       "gender": req.gender,
       "countryOfBirth": req.countryOfBirth,
       "countryOfCitizenship": req.countryOfCitizenship,
-      "siblings": req.siblings,
+      "siblings": req.siblings || [],
     });
   } catch (error) {
     throw error;
