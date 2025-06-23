@@ -1,6 +1,6 @@
 import axios from "axios";
 import { API_BACKEND_URL } from "../main";
-import type { EnrolmentFormValues, SiblingFormValues } from "../components/EnrolForm";
+import type { EnrolmentFormValues, SiblingFormValues } from "../components/enrolment_form/EnrolmentForm";
 
 export type EnrolmentPayload = {
   firstName: string;

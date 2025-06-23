@@ -2,14 +2,16 @@ import { useEffect, useState } from "react";
 import { type EnrolmentPayload } from "../../handlers/EnrolmentFormHandler";
 import axios from "axios";
 import { API_BACKEND_URL } from "../../main";
-import { Flex, Table } from "antd";
+import { Button, Flex, Space, Table } from "antd";
 import countries from "country-list";
 import dayjs from "dayjs";
 import Search from "antd/es/input/Search";
+import { useNavigate } from "react-router";
 
 export default function SubmittedEnrolmentForms() {
   const [forms, setForms] = useState<EnrolmentPayload[]>([])
   const [search, setSearch] = useState("");
+  const navigate = useNavigate();
 
   const columns = [
     {
@@ -91,7 +93,7 @@ export default function SubmittedEnrolmentForms() {
 
   return (
     <>
-      <Flex vertical>
+      <Flex vertical gap={30}>
         <Search
           placeholder="Search by name or email"
           allowClear
@@ -100,9 +102,20 @@ export default function SubmittedEnrolmentForms() {
           value={search}
           onChange={e => setSearch(e.target.value)}
           onSearch={e => setSearch(e)}
-          style={{ maxWidth: 500 }}
         />
-        <Table size="small" dataSource={forms} columns={columns}/>
+        <Table
+          rowKey="id"
+          dataSource={forms}
+          columns={columns}
+          size="small"
+          onRow={(record) => {
+            return {
+              onClick: (event) => {
+                navigate(`${record.id}`);
+              },
+            };
+          }}
+        />
       </Flex>
     </>
   );

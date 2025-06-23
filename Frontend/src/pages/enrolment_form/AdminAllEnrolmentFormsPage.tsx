@@ -1,7 +1,7 @@
 import { Card, Flex } from "antd";
-import SubmittedEnrolmentForms from "../components/enrolment_form/SubmittedEnrolmentForms";
+import SubmittedEnrolmentForms from "../../components/enrolment_form/SubmittedEnrolmentForms";
 
-export default function AdminEnrolmentFormPage() {
+export default function AdminAllEnrolmentFormsPage() {
   return (
     <>
       <Flex className="justify-center !mt-15">

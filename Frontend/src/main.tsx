@@ -8,7 +8,8 @@ import SignupPage from './pages/SignupPage.tsx'
 import EnrolmentFormPage from './pages/EnrolmentFormPage.tsx'
 import HomePage from './pages/HomePage.tsx'
 import AdminDashboardPage from './pages/AdminDashboardPage.tsx'
-import AdminEnrolmentFormPage from './pages/AdminEnrolmentFormPage.tsx'
+import AdminAllEnrolmentFormsPage from './pages/enrolment_form/AdminAllEnrolmentFormsPage.tsx'
+import AdminEnrolmentFormPage from './pages/enrolment_form/AdminEnrolmentFormPage.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -16,7 +17,8 @@ createRoot(document.getElementById('root')!).render(
       <Routes>
         <Route path="/" element={ <HomePage/> }/>
         <Route path="/admin" element={ <AdminDashboardPage/> }/>
-        <Route path="/admin/forms/enrolment" element={ <AdminEnrolmentFormPage/> }/>
+        <Route path="/admin/forms/enrolments" element={ <AdminAllEnrolmentFormsPage/> }/>
+        <Route path="/admin/forms/enrolments/:id" element={ <AdminEnrolmentFormPage/> }/>
         <Route path="/login" element={ <LoginPage/> }/>
         <Route path="/signup" element={ <SignupPage/> }/>
         <Route path="/forms/enrolment" element={ <EnrolmentFormPage/> }/>
