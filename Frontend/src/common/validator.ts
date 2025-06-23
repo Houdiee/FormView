@@ -19,7 +19,6 @@ export const validateAlphabetical = (required: boolean): Rule[] => [
 
 export const validateNumerical = (required: boolean): Rule[] => [
   { required, message: "Cannot be empty" },
-  { max: 128, message: "Too long" },
   {
     validator: (_: any, value: string) => {
       if (/[a-zA-Z]/.test(value)) {
