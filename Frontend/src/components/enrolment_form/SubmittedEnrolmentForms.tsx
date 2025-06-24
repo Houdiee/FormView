@@ -36,28 +36,24 @@ export default function SubmittedEnrolmentForms() {
       title: "First Name",
       dataIndex: "firstName",
       sorter: (a, b) => a.firstName.localeCompare(b.firstName),
-      width: 150,
       ellipsis: true,
     },
     {
       title: "Last Name",
       dataIndex: "lastName",
       sorter: (a, b) => a.lastName.localeCompare(b.lastName),
-      width: 150,
       ellipsis: true,
     },
     {
       title: "Middle Name(s)",
       dataIndex: "middleName",
       sorter: (a, b) => (a.middleName || "").localeCompare(b.middleName || ""),
-      width: 150,
       ellipsis: true,
     },
     {
       title: "Email",
       dataIndex: "email",
       sorter: (a, b) => a.email.localeCompare(b.email),
-      width: 150,
       ellipsis: true,
     },
     {
@@ -65,8 +61,6 @@ export default function SubmittedEnrolmentForms() {
       dataIndex: "dateOfBirth",
       render: (dateOfBirth: string) => dayjs(dateOfBirth).format("DD/MM/YYYY"),
       sorter: (a, b) => dayjs(a.dateOfBirth).unix() - dayjs(b.dateOfBirth).unix(),
-      width: 115,
-      ellipsis: true,
     },
     {
       title: "Age",
@@ -85,16 +79,12 @@ export default function SubmittedEnrolmentForms() {
       dataIndex: "countryOfBirth",
       render: (countryCode: string) => countries.getName(countryCode),
       sorter: (a, b) => a.countryOfBirth.localeCompare(b.countryOfBirth),
-      width: 140,
-      ellipsis: true,
     },
     {
       title: "Country of citizenship",
       dataIndex: "countryOfCitizenship",
       render: (countryCode: string) => countries.getName(countryCode),
       sorter: (a, b) => a.countryOfCitizenship.localeCompare(b.countryOfCitizenship),
-      width: 140,
-      ellipsis: true,
     },
     {
       title: "Siblings",
@@ -122,7 +112,6 @@ export default function SubmittedEnrolmentForms() {
     },
     {
       title: "Action",
-      width: 80,
       render: (_, record) => (
         <Popconfirm
           title="Delete form"

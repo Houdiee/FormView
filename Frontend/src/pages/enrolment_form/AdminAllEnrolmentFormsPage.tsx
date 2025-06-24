@@ -4,7 +4,7 @@ import SubmittedEnrolmentForms from "../../components/enrolment_form/SubmittedEn
 export default function AdminAllEnrolmentFormsPage() {
   return (
     <>
-      <Flex className="justify-center !mt-15">
+      <Flex className="justify-center !mt-15 !p-10">
         <Card>
           <SubmittedEnrolmentForms/>
         </Card>
