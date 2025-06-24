@@ -16,7 +16,7 @@ export default function AdminNavbar() {
     {
       key: "logout",
       label: (
-        <Link to="/login">
+        <Link to="/login" onClick={() => localStorage.removeItem("token")}>
           Logout
         </Link>
       ),

@@ -10,18 +10,22 @@ import HomePage from './pages/HomePage.tsx'
 import AdminDashboardPage from './pages/AdminDashboardPage.tsx'
 import AdminAllEnrolmentFormsPage from './pages/enrolment_form/AdminAllEnrolmentFormsPage.tsx'
 import AdminEnrolmentFormPage from './pages/enrolment_form/AdminEnrolmentFormPage.tsx'
+import ProtectedRoute from './ProtectedRoute.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
       <Routes>
         <Route path="/" element={ <HomePage/> }/>
-        <Route path="/admin" element={ <AdminDashboardPage/> }/>
-        <Route path="/admin/forms/enrolments" element={ <AdminAllEnrolmentFormsPage/> }/>
-        <Route path="/admin/forms/enrolments/:id" element={ <AdminEnrolmentFormPage/> }/>
         <Route path="/login" element={ <LoginPage/> }/>
         <Route path="/signup" element={ <SignupPage/> }/>
         <Route path="/forms/enrolment" element={ <EnrolmentFormPage/> }/>
+
+        <Route element={<ProtectedRoute/>}>
+          <Route path="/admin" element={ <AdminDashboardPage/> }/>
+          <Route path="/admin/forms/enrolments" element={ <AdminAllEnrolmentFormsPage/> }/>
+          <Route path="/admin/forms/enrolments/:id" element={ <AdminEnrolmentFormPage/> }/>
+        </Route>
       </Routes>
     </BrowserRouter>
   </StrictMode>,
