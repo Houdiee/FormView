@@ -11,11 +11,13 @@ namespace Api.Controllers;
 [Route("api/[controller]")]
 public class LoginController(
     AppDbContext context,
-    IPasswordHasher<UserModel> passwordHasher
+    IPasswordHasher<UserModel> passwordHasher,
+    TokenProvider tokenProvider
 ) : ControllerBase
 {
     private readonly AppDbContext _context = context;
     private readonly IPasswordHasher<UserModel> _passwordHasher = passwordHasher;
+    private readonly TokenProvider _tokenProvier = tokenProvider;
 
     [HttpPost]
     public async Task<IActionResult> VerifyUserCredentials([FromBody] LoginRequestDto req)
@@ -34,6 +36,6 @@ public class LoginController(
             return BadRequest(new { error = "Incorrect password" });
         }
 
-        return Ok();
+        return Ok(new { token = _tokenProvier.Create(user) });
     }
 }

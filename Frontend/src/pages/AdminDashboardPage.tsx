@@ -16,7 +16,11 @@ export default function AdminDashboardPage() {
 
   useEffect(() => {
     const fetchForms = async () => {
-      const response = await axios.get<DashboardFormItem[]>(`${API_BACKEND_URL}/admin/dashboard`);
+      const response = await axios.get<DashboardFormItem[]>(`${API_BACKEND_URL}/admin/dashboard`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`
+        }
+      });
       setFormsList(response.data);
     };
 

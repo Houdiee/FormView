@@ -28,7 +28,7 @@ public class ActivateController(AppDbContext context, IResend resend) : Controll
 
         EmailMessage email = new()
         {
-            From = "onboarding@resend.dev",
+            From = "FormView <no-reply@formview.org>",
             To = user.Email,
             Subject = "You have been granted admin access",
             HtmlBody = $"Congrats {user.FirstName}, your request to become an admin was successful. To get started, log in with ${user.Email}",

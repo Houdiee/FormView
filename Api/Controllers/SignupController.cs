@@ -47,7 +47,7 @@ public class SignupController(
 
         EmailMessage email = new()
         {
-            From = "no-reply@formview.org",
+            From = "FormView <no-reply@formview.org>",
             To = _configuration["OwnerEmail"]!,
             Subject = $"{req.FirstName} {req.LastName} is requesting admin access",
             HtmlBody = $"<p>Click <a href={accessLink}>here</a> to grant {req.Email} admin access.</p>",

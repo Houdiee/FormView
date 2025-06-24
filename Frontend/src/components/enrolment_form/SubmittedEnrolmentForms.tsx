@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { type EnrolmentPayload } from "../../handlers/EnrolmentFormHandler";
-import axios from "axios";
+import enrolmentFormHandler, { type EnrolmentPayload } from "../../handlers/EnrolmentFormHandler";
+import axios, { isAxiosError } from "axios";
 import { API_BACKEND_URL } from "../../main";
-import { Button, Flex, message, Popconfirm, Table } from "antd";
+import { Button, Flex, message, notification, Popconfirm, Table } from "antd";
 import countries from "country-list";
 import dayjs from "dayjs";
 import Search from "antd/es/input/Search";
@@ -12,19 +12,30 @@ import { DeleteOutlined } from "@ant-design/icons";
 export default function SubmittedEnrolmentForms() {
   const [forms, setForms] = useState<EnrolmentPayload[]>([])
   const [search, setSearch] = useState("");
+  const [api, contextHolder] = notification.useNotification();
   const navigate = useNavigate();
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = async (id: number) => {
     try {
-      await axios.delete(`${API_BACKEND_URL}/forms/enrolments/${id}`);
-      message.success("Form deleted successfully!");
+      await enrolmentFormHandler({
+        method: "DELETE",
+        id: id,
+        token: localStorage.getItem("token") || undefined,
+      });
       setForms(prevForms => prevForms.filter(form => form.id !== id));
     } catch (error) {
-      console.error(`Failed to delete form with ID ${id}:`, error);
-      message.error("Failed to delete form.");
+      let errorMsg = "An unexpected problem occurred";
+
+      if (isAxiosError(error) && error.response) {
+        errorMsg = error.response.data.error;
+      }
+
+      api.error({
+        message: "Failed to delete form",
+        description: errorMsg,
+      });
     }
   };
-
 
   const columns = [
     {
@@ -139,7 +150,10 @@ export default function SubmittedEnrolmentForms() {
   useEffect(() => {
     const fetchForms = async () => {
       try {
-        const response = await axios.get<EnrolmentPayload[]>(`${API_BACKEND_URL}/forms/enrolments?search=${encodeURIComponent(search)}`);
+        const response = await axios.get<EnrolmentPayload[]>(
+          `${API_BACKEND_URL}/forms/enrolments?search=${encodeURIComponent(search)}`, {
+            headers: { Authorization: `Bearer ${localStorage.getItem("token")}`}
+        });
         setForms(response.data);
       } catch (error) {
         console.log(error);
@@ -151,6 +165,7 @@ export default function SubmittedEnrolmentForms() {
 
   return (
     <>
+      {contextHolder}
       <Flex vertical gap={30}>
         <Search
           placeholder="Search by name or email"

@@ -1,9 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Dtos;
 
 namespace Api.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/admin/[controller]")]
 public class DashboardController(AppDbContext context) : ControllerBase

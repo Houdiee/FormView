@@ -9,6 +9,7 @@ import { validateAlphabetical, validateEmail, validateNotEmpty, validateNumerica
 import enrolmentFormHandler from "../../handlers/EnrolmentFormHandler";
 import axios from "axios";
 import { API_BACKEND_URL } from "../../main";
+import Navbar from "../Navbar";
 
 interface EnrolmentFormProps {
   onSubmitSuccessful: (isSuccessful: boolean) => void
@@ -47,14 +48,23 @@ export default function EnrolmentForm({ formId, onSubmitSuccessful }: EnrolmentF
     setSubmitting(true);
     try {
       if (formId !== undefined && formId !== null) {
-        await enrolmentFormHandler(values, "PUT", formId);
+        await enrolmentFormHandler({
+          method: "PUT",
+          req: values,
+          id: formId,
+          token: localStorage.getItem("token") || undefined,
+        });
         api["success"]({
           message: "Form updated",
           description: "The form has been updated",
         });
+        setFormDisabled(true);
       }
       else {
-        await enrolmentFormHandler(values, "POST");
+        await enrolmentFormHandler({
+          method: "POST",
+          req: values,
+        });
         onSubmitSuccessful(true);
       }
     }
@@ -87,7 +97,12 @@ export default function EnrolmentForm({ formId, onSubmitSuccessful }: EnrolmentF
       }
 
       try {
-        const fetchedData = (await axios.get(`${API_BACKEND_URL}/forms/enrolments/${formId}`)).data;
+        const fetchedData = (await enrolmentFormHandler({
+          method: "GET",
+          token: localStorage.getItem("token") || undefined,
+          id: formId,
+        })).data;
+
         const transformedData: EnrolmentFormValues = {
           ...fetchedData,
           siblings: fetchedData.siblings.map((sibling: any) => ({

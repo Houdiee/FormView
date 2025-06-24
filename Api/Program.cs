@@ -1,11 +1,34 @@
 using Resend;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using FluentValidation;
+using System.Text;
 using FluentValidation.AspNetCore;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Password Hasher
+// JWT setup
+builder.Services.AddSingleton<TokenProvider>();
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+  .AddJwtBearer(options =>
+  {
+      options.TokenValidationParameters = new TokenValidationParameters
+      {
+          ValidateIssuer = true,
+          ValidateAudience = true,
+          ValidateLifetime = true,
+          ValidateIssuerSigningKey = true,
+
+          ValidIssuer = builder.Configuration["Jwt:Issuer"],
+          ValidAudience = builder.Configuration["Jwt:Audience"],
+          IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!)),
+      };
+  }
+);
+
+// Password Hasher setup
 builder.Services.AddScoped<IPasswordHasher<Models.UserModel>, PasswordHasher<Models.UserModel>>();
 
 // EF Core setup

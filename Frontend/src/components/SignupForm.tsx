@@ -4,6 +4,7 @@ import signupHandler from "../handlers/SignupHandler";
 import axios, { HttpStatusCode } from "axios";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { validateAlphabetical, validateText } from "../common/validator";
+import { useState } from "react";
 
 interface SignupFormProps {
   onFormCompletion: (completed: boolean) => void,
@@ -19,9 +20,11 @@ export type SignupFormValues = {
 
 export default function SignupForm({ onFormCompletion }: SignupFormProps) {
   const [form] = Form.useForm();
+  const [submitting, setSubmitting] = useState(false);
   const [api, contextHolder] = notification.useNotification();
 
   const onFinish: FormProps<SignupFormValues>['onFinish'] = async (values) => {
+    setSubmitting(true);
     try {
       await signupHandler(values);
       onFormCompletion(true);
@@ -45,6 +48,9 @@ export default function SignupForm({ onFormCompletion }: SignupFormProps) {
         message: "Sign Up Failed",
         description: errorMessage,
       });
+    }
+    finally {
+      setSubmitting(false);
     }
   };
 
@@ -127,6 +133,7 @@ export default function SignupForm({ onFormCompletion }: SignupFormProps) {
             type="primary"
             htmlType="submit"
             className="!w-full"
+            disabled={submitting}
           >
             Request an Admin Account
           </Button>

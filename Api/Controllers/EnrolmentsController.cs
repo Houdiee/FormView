@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Resend;
 using Models;
 using System.Globalization;
@@ -42,7 +43,7 @@ public class EnrolmentsController(AppDbContext context, IResend resend) : Contro
 
         EmailMessage email = new()
         {
-            From = "no-reply@formview.org",
+            From = "FormView <no-reply@formview.org>",
             To = formDto.Email,
             Subject = "We have received your enrolment form",
             HtmlBody = "<p>Your enrolment is currently up for review.</p>",
@@ -66,6 +67,7 @@ public class EnrolmentsController(AppDbContext context, IResend resend) : Contro
         }
     }
 
+    [Authorize]
     [HttpGet]
     public async Task<IActionResult> ListAllEnrolmentForms([FromQuery] string? search = null)
     {
@@ -92,6 +94,7 @@ public class EnrolmentsController(AppDbContext context, IResend resend) : Contro
         return Ok(enrolmentForms);
     }
 
+    [Authorize]
     [HttpGet("{id}")]
     public async Task<IActionResult> GetFormById(int id)
     {
@@ -106,6 +109,7 @@ public class EnrolmentsController(AppDbContext context, IResend resend) : Contro
         return Ok(form);
     }
 
+    [Authorize]
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateForm(int id, [FromBody] EnrolmentFormRequestDto formDto)
     {
@@ -148,6 +152,7 @@ public class EnrolmentsController(AppDbContext context, IResend resend) : Contro
         }
     }
 
+    [Authorize]
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteForm(int id)
     {

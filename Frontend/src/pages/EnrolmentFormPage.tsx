@@ -1,9 +1,7 @@
 import { Card, Flex, Result } from "antd";
 import StudentForm from "../components/enrolment_form/EnrolmentForm";
 import { useState } from "react";
-import { Button } from "antd";
-import { ArrowLeftOutlined } from "@ant-design/icons";
-import { Link } from "react-router";
+import Navbar from "../components/Navbar";
 
 export default function EnrolFormPage() {
   const [success, setSuccess] = useState<boolean>(false);
@@ -14,10 +12,8 @@ export default function EnrolFormPage() {
 
   return (
     <>
-      <Link to="/">
-        <Button type="primary" className="m-2"><ArrowLeftOutlined/>Back</Button>
-      </Link>
-      <Flex className="justify-center">
+      <Navbar/>
+      <Flex className="justify-center !mt-6">
           <Card className="w-200">
             {success ?
               <Result

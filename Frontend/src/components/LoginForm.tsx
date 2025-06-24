@@ -5,6 +5,7 @@ import { validateEmail, validateText } from "../common/validator";
 import loginHandler from "../handlers/LoginHandler";
 import { useNavigate } from "react-router";
 import axios from "axios";
+import { useState } from "react";
 
 export type LoginFormValues = {
   email?: string;
@@ -13,12 +14,15 @@ export type LoginFormValues = {
 
 export default function LoginForm() {
   const [form] = Form.useForm();
+  const [submitting, setSubmitting] = useState(false);
   const [api, contextHolder] = notification.useNotification();
   const navigate = useNavigate();
 
   const onFinish: FormProps<LoginFormValues>['onFinish'] = async (values) => {
+    setSubmitting(true);
     try {
-      await loginHandler(values);
+      const reponse = await loginHandler(values);
+      localStorage.setItem("token", reponse.data.token);
       navigate("/admin");
     }
     catch (error) {
@@ -32,6 +36,9 @@ export default function LoginForm() {
         message: "Sign Up Failed",
         description: errorMessage,
       });
+    }
+    finally {
+      setSubmitting(false);
     }
   };
 
@@ -72,6 +79,7 @@ export default function LoginForm() {
             type="primary"
             htmlType="submit"
             className="!w-full"
+            disabled={submitting}
           >
             Log In
           </Button>
