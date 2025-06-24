@@ -1,4 +1,5 @@
 using Resend;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using FluentValidation;
@@ -77,8 +78,22 @@ if (app.Environment.IsDevelopment())
 
 app.UseRouting();
 
-app.UseCors();
+app.UseStaticFiles(new StaticFileOptions
+{
+    // Ensure this path exactly matches where your images are saved.
+    // builder.Environment.ContentRootPath is typically your project directory.
+    FileProvider = new PhysicalFileProvider(
+        Path.Combine(builder.Environment.ContentRootPath, "images")),
 
+    // This is the URL prefix you expect in the browser.
+    // It *must* match exactly what your controller returns (e.g., "/images")
+    RequestPath = "/images"
+});
+
+app.UseCors();
+//
+// TODO ADD httpRedirection
+//
 app.UseAuthorization();
 
 app.MapControllers();

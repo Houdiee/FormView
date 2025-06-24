@@ -25,11 +25,18 @@ public class SignupController(
     public async Task<IActionResult> SignupAndRequestAdminAccess([FromBody] SignupRequestDto req)
     {
         UserModel? existingUser = await _context.Users.FirstOrDefaultAsync(u => u.Email == req.Email);
-        if (existingUser != null && existingUser.Status == Status.Pending)
-        {
-            return BadRequest(new { error = "User has already requested to become an admin" });
-        }
 
+        if (existingUser != null)
+        {
+            if (existingUser.Status == Status.Pending)
+            {
+                return BadRequest(new { error = "User has already requested to become an admin" });
+            }
+            else if (existingUser.Status == Status.Accepted)
+            {
+                return BadRequest(new { error = "User is already an admin" });
+            }
+        }
 
         UserModel newUser = new()
         {

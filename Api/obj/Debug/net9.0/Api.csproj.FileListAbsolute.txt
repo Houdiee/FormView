@@ -276,3 +276,4 @@
 /home/kerim/projects/FormView/Api/bin/Debug/net9.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 /home/kerim/projects/FormView/Api/bin/Debug/net9.0/Microsoft.IdentityModel.Tokens.dll
 /home/kerim/projects/FormView/Api/bin/Debug/net9.0/System.IdentityModel.Tokens.Jwt.dll
+/home/kerim/projects/FormView/Api/bin/Debug/net9.0/Api.staticwebassets.runtime.json

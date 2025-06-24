@@ -19,6 +19,7 @@ public class EnrolmentForm
     public required string CountryOfCitizenship { get; set; }
     public required List<EnrolmentFormSibling> Siblings { get; set; } = new();
     public required DateTime CreatedAt { get; set; }
+    public required string FilePath { get; set; }
 }
 
 public class EnrolmentFormSibling

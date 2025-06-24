@@ -10,10 +10,15 @@ namespace Api.Controllers;
 
 [ApiController]
 [Route("api/forms/[controller]")]
-public class EnrolmentsController(AppDbContext context, IResend resend) : ControllerBase
+public class EnrolmentsController(
+    AppDbContext context,
+    IResend resend,
+    IWebHostEnvironment webHostEnvironment
+) : ControllerBase
 {
     private readonly AppDbContext _context = context;
     private readonly IResend _resend = resend;
+    private readonly IWebHostEnvironment _webHostEnvironment = webHostEnvironment;
 
     [HttpPost]
     public async Task<IActionResult> SaveEnrolmentFormToDb([FromBody] EnrolmentFormRequestDto formDto)
@@ -37,6 +42,7 @@ public class EnrolmentsController(AppDbContext context, IResend resend) : Contro
                 })
                 .ToList() ?? new List<EnrolmentFormSibling>(),
             CreatedAt = DateTime.Now.ToUniversalTime(),
+            FilePath = formDto.FilePath,
         };
 
         await _context.EnrolmentForms.AddAsync(enrolmentForm);
@@ -175,6 +181,45 @@ public class EnrolmentsController(AppDbContext context, IResend resend) : Contro
                 StatusCodes.Status500InternalServerError,
                 new { error = "An unexpected problem occurred" }
             );
+        }
+    }
+
+    [HttpPost("upload")]
+    public async Task<IActionResult> UploadFile(IFormFile file)
+    {
+        if (file == null || file.Length == 0)
+        {
+            return BadRequest("No file uploaded or file is empty.");
+        }
+
+        try
+        {
+            var uploadDirectory = Path.Combine(Directory.GetCurrentDirectory(), "images");
+
+            if (!Directory.Exists(uploadDirectory))
+            {
+                Directory.CreateDirectory(uploadDirectory);
+            }
+
+            string fileName = Path.GetFileNameWithoutExtension(file.FileName);
+            string extension = Path.GetExtension(file.FileName);
+            string newFileName = $"{fileName}_{Guid.NewGuid()}{extension}";
+            string filePath = Path.Combine(uploadDirectory, newFileName);
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
+
+            return Ok(new
+            {
+                filePath = newFileName,
+                Message = "File uploaded successfully"
+            });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Internal server error: {ex.Message}");
         }
     }
 }

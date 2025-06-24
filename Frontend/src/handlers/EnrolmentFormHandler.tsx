@@ -2,7 +2,7 @@ import axios from "axios";
 import { API_BACKEND_URL } from "../main";
 import type { EnrolmentFormValues, SiblingFormValues } from "../components/enrolment_form/EnrolmentForm";
 
-export type EnrolmentPayload = {
+export type EnrolmentFormDto = {
   id?: number,
   firstName: string;
   middleName: string | null;
@@ -14,6 +14,7 @@ export type EnrolmentPayload = {
   countryOfBirth: string;
   countryOfCitizenship: string;
   siblings: SiblingFormValues[];
+  filePath: string,
 }
 
 interface EnrolmentFormHandlerParams {
@@ -32,7 +33,7 @@ export default async function enrolmentFormHandler(
   }: EnrolmentFormHandlerParams)
 {
   try {
-    const payload: EnrolmentPayload = {
+    const payload: EnrolmentFormDto = {
       firstName: req?.firstName!,
       middleName: req?.middleName! || null,
       lastName: req?.lastName!,
@@ -43,25 +44,26 @@ export default async function enrolmentFormHandler(
       countryOfBirth: req?.countryOfBirth!,
       countryOfCitizenship: req?.countryOfCitizenship!,
       siblings: req?.siblings || [],
+      filePath: req?.filePath!,
     };
 
     let response;
     switch (method) {
       case "POST":
-        if (!payload) throw new Error("Payload is required for POST");
+        if (!req) throw new Error("Req is required for POST");
         response = await axios.post(`${API_BACKEND_URL}/forms/enrolments`, payload);
         break;
 
       case "PUT":
         if (!id) throw new Error("Id is required for PUT");
-        if (!payload) throw new Error("Payload is required for PUT");
+        if (!req) throw new Error("Req is required for PUT");
         if (!token) throw new Error("Token is required for PUT");
         response = await axios.put(`${API_BACKEND_URL}/forms/enrolments/${id}`, payload, {
           headers: {
             Authorization: `Bearer ${token}`
           }
         });
-      break;
+        break;
 
       case "GET":
         if (!token) throw new Error("Token is required for GET");
@@ -89,6 +91,7 @@ export default async function enrolmentFormHandler(
           }
         });
         break;
+
       default:
         throw new Error(`Invalid HTTP method: ${method}`);
     }

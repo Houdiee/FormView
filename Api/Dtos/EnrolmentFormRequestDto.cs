@@ -16,6 +16,7 @@ public class EnrolmentFormRequestDto
     public required string CountryOfBirth { get; set; }
     public required string CountryOfCitizenship { get; set; }
     public required List<EnrolmentFormSiblingRequestDto>? Siblings { get; set; }
+    public required string FilePath { get; set; }
 }
 
 public class EnrolmentFormSiblingRequestDto
