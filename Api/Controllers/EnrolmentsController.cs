@@ -95,7 +95,9 @@ public class EnrolmentsController(AppDbContext context, IResend resend) : Contro
     [HttpGet("{id}")]
     public async Task<IActionResult> GetFormById(int id)
     {
-        EnrolmentForm? form = await _context.EnrolmentForms.FindAsync(id);
+        EnrolmentForm? form = await _context.EnrolmentForms
+                                        .Include(f => f.Siblings)
+                                        .FirstOrDefaultAsync(f => f.Id == id);
         if (form == null)
         {
             return BadRequest(new { error = "Form does not exist" });
@@ -131,6 +133,18 @@ public class EnrolmentsController(AppDbContext context, IResend resend) : Contro
             })
             .ToList() ?? new List<EnrolmentFormSibling>();
 
-        return Ok(existingForm);
+        try
+        {
+            await _context.SaveChangesAsync();
+            return Ok(existingForm);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Error: {e}");
+            return StatusCode(
+                StatusCodes.Status500InternalServerError,
+                new { error = "An unexpected problem occurred" }
+            );
+        }
     }
 }
