@@ -57,6 +57,7 @@ export default function LoginForm() {
       >
         <Form.Item<LoginFormValues>
           name="email"
+          hasFeedback
           rules={validateEmail(true)}
         >
           <Input placeholder="Email" prefix={ <UserOutlined/> } />

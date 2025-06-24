@@ -1,5 +1,5 @@
 // TODO upload photo
-import { Button, Card, DatePicker, Flex, Form, Input, notification, Radio, Select, Space, Upload, type FormProps } from "antd";
+import { Button, DatePicker, Flex, Form, Input, notification, Radio, Select, Upload, type FormProps } from "antd";
 import dayjs from "dayjs";
 import countries from "country-list";
 import getCountryFlag from "country-flag-icons/unicode";
@@ -7,9 +7,6 @@ import { useEffect, useState } from "react";
 import { EditOutlined, MinusCircleOutlined, PlusOutlined, StopOutlined, UploadOutlined } from "@ant-design/icons";
 import { validateAlphabetical, validateEmail, validateNotEmpty, validateNumerical } from "../../common/validator";
 import enrolmentFormHandler from "../../handlers/EnrolmentFormHandler";
-import axios from "axios";
-import { API_BACKEND_URL } from "../../main";
-import Navbar from "../Navbar";
 
 interface EnrolmentFormProps {
   onSubmitSuccessful: (isSuccessful: boolean) => void
@@ -276,11 +273,11 @@ export default function EnrolmentForm({ formId, onSubmitSuccessful }: EnrolmentF
           <Form.List name="siblings">
             {(fields, { add, remove }) => (
               <>
-                {fields.map(({ key, name, ...restField }) => (
-                  <Flex align="baseline" gap="small" key={key}>
+                {fields.map(field => (
+                  <Flex align="baseline" gap="small" key={field.key}>
                     <Form.Item<SiblingFormValues>
-                      {...restField}
-                      name={[name, "firstName"]}
+                      {...field}
+                      name={[field.name, "firstName"]}
                       rules={validateAlphabetical(true)}
                       className="flex-grow"
                       hasFeedback
@@ -288,15 +285,15 @@ export default function EnrolmentForm({ formId, onSubmitSuccessful }: EnrolmentF
                       <Input placeholder="First Name" />
                     </Form.Item>
                     <Form.Item<SiblingFormValues>
-                      {...restField}
-                      name={[name, "lastName"]}
+                      {...field}
+                      name={[field.name, "lastName"]}
                       rules={validateAlphabetical(true)}
                       className="flex-grow"
                       hasFeedback
                     >
                       <Input placeholder="Last Name" />
                     </Form.Item>
-                    <MinusCircleOutlined onClick={() => remove(name)} />
+                    <MinusCircleOutlined onClick={() => remove(field.name)} />
                   </Flex>
                 ))}
                 <Form.Item label={null}>
