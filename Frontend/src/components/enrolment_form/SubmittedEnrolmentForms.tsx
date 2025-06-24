@@ -97,7 +97,7 @@ export default function SubmittedEnrolmentForms() {
            <ul>
              {siblings.map((sibling, index) => (
                <li key={index}>
-                 {sibling.firstName},
+                 {sibling.firstName}
                </li>
              ))}
            </ul>
@@ -165,7 +165,7 @@ export default function SubmittedEnrolmentForms() {
           dataSource={forms}
           columns={columns}
           size="small"
-          className="cursor-pointer"
+          className="cursor-pointer h-150"
           onRow={(record) => {
             return {
               onClick: (event) => {

@@ -1,6 +1,7 @@
 import { Card, Flex, Result } from "antd";
 import SignupForm from "../components/SignupForm";
 import { useState } from "react";
+import Navbar from "../components/Navbar";
 
 export default function SignupPage() {
   const [formCompleted, setFormCompleted] = useState<boolean>(false);
@@ -11,7 +12,8 @@ export default function SignupPage() {
 
   return (
     <>
-      <Flex className="h-screen justify-center items-center">
+      <Navbar/>
+      <Flex className="justify-center !mt-35">
         <Card>
           {formCompleted ?
             <Result

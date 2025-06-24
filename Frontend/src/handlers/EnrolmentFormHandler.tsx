@@ -3,6 +3,7 @@ import { API_BACKEND_URL } from "../main";
 import type { EnrolmentFormValues, SiblingFormValues } from "../components/enrolment_form/EnrolmentForm";
 
 export type EnrolmentPayload = {
+  id?: number,
   firstName: string;
   middleName: string | null;
   lastName: string;

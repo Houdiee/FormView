@@ -1,4 +1,4 @@
-import { Card, Flex } from "antd";
+import { Button, Card, Flex } from "antd";
 import SubmittedEnrolmentForms from "../../components/enrolment_form/SubmittedEnrolmentForms";
 
 export default function AdminAllEnrolmentFormsPage() {

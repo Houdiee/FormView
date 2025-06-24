@@ -36,6 +36,7 @@ export type SiblingFormValues = {
 
 export default function EnrolmentForm({ formId, onSubmitSuccessful }: EnrolmentFormProps) {
   const [form] = Form.useForm();
+  const [submitting, setSubmitting] = useState(false);
   const [initialFormData, setInitialFormData] = useState<EnrolmentFormValues | null>(null);
   const [formDisabled, setFormDisabled] = useState(false);
   const [api, contextHolder] = notification.useNotification();
@@ -43,6 +44,7 @@ export default function EnrolmentForm({ formId, onSubmitSuccessful }: EnrolmentF
   const dateOfBirth = Form.useWatch("dateOfBirth", form);
 
   const onFinish: FormProps<EnrolmentFormValues>['onFinish'] = async (values) => {
+    setSubmitting(true);
     try {
       if (formId !== undefined && formId !== null) {
         await enrolmentFormHandler(values, "PUT", formId);
@@ -62,6 +64,8 @@ export default function EnrolmentForm({ formId, onSubmitSuccessful }: EnrolmentF
         description: "An unexpected problem occurred",
       });
       console.log(error);
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -134,6 +138,7 @@ export default function EnrolmentForm({ formId, onSubmitSuccessful }: EnrolmentF
             type="primary"
             onClick={handleCancel}
             className="!bg-red-400"
+            icon={<StopOutlined/>}
           >
             Cancel
           </Button>
@@ -301,7 +306,11 @@ export default function EnrolmentForm({ formId, onSubmitSuccessful }: EnrolmentF
 
         <Flex justify="end">
           <Form.Item>
-              <Button htmlType="submit" type="primary">{formId ? "Update" : "Submit"}</Button>
+              <Button
+                disabled={submitting}
+                htmlType="submit"
+                type="primary"
+              >{formId ? "Update" : (submitting ? "Submitting..." : "Submit")}</Button>
           </Form.Item>
         </Flex>
       </Form>

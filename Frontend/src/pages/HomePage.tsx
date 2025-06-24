@@ -1,10 +1,12 @@
 import { FormOutlined } from "@ant-design/icons";
 import { Card, Flex, List, Typography } from "antd";
 import { Link } from "react-router";
+import Navbar from "../components/Navbar";
 
 export default function HomePage() {
   return (
     <>
+    <Navbar/>
     <Flex className="justify-center !mt-20">
       <Card className="w-150">
         <Typography.Title level={2}>

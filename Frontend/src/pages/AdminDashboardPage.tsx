@@ -3,6 +3,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import { API_BACKEND_URL } from "../main";
+import AdminNavbar from "../components/AdminNavbar";
 
 type DashboardFormItem = {
   formName: string,
@@ -24,6 +25,7 @@ export default function AdminDashboardPage() {
 
   return (
     <>
+      <AdminNavbar/>
       <Flex className="justify-center !mt-20">
         <Card className="w-150">
           <Typography.Title level={2}>

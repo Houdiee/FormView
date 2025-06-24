@@ -1,8 +1,8 @@
-import { EditOutlined, ProfileFilled, UserOutlined } from '@ant-design/icons';
-import { Flex, Menu, Typography } from 'antd';
+import { EditOutlined, LogoutOutlined, ProfileFilled } from '@ant-design/icons';
+import { Menu, Flex, Typography } from 'antd';
 import { Link } from 'react-router';
 
-export default function Navbar() {
+export default function AdminNavbar() {
   const items = [
     {
       key: "available-forms",
@@ -14,13 +14,13 @@ export default function Navbar() {
       icon: <EditOutlined />,
     },
     {
-      key: "im-an-admin",
+      key: "logout",
       label: (
         <Link to="/login">
-          I'm an admin
+          Logout
         </Link>
       ),
-      icon: <UserOutlined />,
+      icon: <LogoutOutlined />,
     },
   ];
 
@@ -30,9 +30,9 @@ export default function Navbar() {
       align="center"
       className="bg-white h-20"
     >
-      <Link to="/" className="ml-6 mt-2">
+      <Link to="/admin" className="ml-6 mt-2">
         <Typography.Title level={3}>
-          <ProfileFilled/> FormView
+          <ProfileFilled/> Admin Dashboard
         </Typography.Title>
       </Link>
 
