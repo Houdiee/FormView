@@ -18,7 +18,7 @@ public class DashboardController(AppDbContext context) : ControllerBase
             new DashboardFormItemDto {
                 FormName = "Enrolment form",
                 FormSubmissionCount = await _context.EnrolmentForms.CountAsync(),
-                FormUrlPath = "/admin/forms/enrolment",
+                FormUrlPath = "/admin/forms/enrolments",
             },
         };
 
