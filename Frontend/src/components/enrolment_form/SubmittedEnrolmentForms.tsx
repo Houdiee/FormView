@@ -17,54 +17,71 @@ export default function SubmittedEnrolmentForms() {
     {
       title: "ID",
       dataIndex: "id",
+      width: 50,
     },
     {
       title: "First Name",
       dataIndex: "firstName",
       sorter: (a, b) => a.firstName.localeCompare(b.firstName),
+      width: 150,
+      ellipsis: true,
     },
     {
       title: "Last Name",
       dataIndex: "lastName",
       sorter: (a, b) => a.lastName.localeCompare(b.lastName),
+      width: 150,
+      ellipsis: true,
     },
     {
       title: "Middle Name(s)",
       dataIndex: "middleName",
       sorter: (a, b) => (a.middleName || "").localeCompare(b.middleName || ""),
+      width: 150,
+      ellipsis: true,
     },
     {
       title: "Email",
       dataIndex: "email",
       sorter: (a, b) => a.email.localeCompare(b.email),
+      width: 150,
+      ellipsis: true,
     },
     {
       title: "Date of birth",
       dataIndex: "dateOfBirth",
       render: (dateOfBirth: string) => dayjs(dateOfBirth).format("DD/MM/YYYY"),
       sorter: (a, b) => dayjs(a.dateOfBirth).unix() - dayjs(b.dateOfBirth).unix(),
+      width: 115,
+      ellipsis: true,
     },
     {
       title: "Age",
       dataIndex: "age",
       sorter: (a, b) => a.age - b.age,
+      width: 60,
     },
     {
       title: "Gender",
       dataIndex: "gender",
       sorter: (a, b) => a.gender.localeCompare(b.gender),
+      width: 85,
     },
     {
       title: "Country of birth",
       dataIndex: "countryOfBirth",
       render: (countryCode: string) => countries.getName(countryCode),
       sorter: (a, b) => a.countryOfBirth.localeCompare(b.countryOfBirth),
+      width: 140,
+      ellipsis: true,
     },
     {
       title: "Country of citizenship",
       dataIndex: "countryOfCitizenship",
       render: (countryCode: string) => countries.getName(countryCode),
       sorter: (a, b) => a.countryOfCitizenship.localeCompare(b.countryOfCitizenship),
+      width: 140,
+      ellipsis: true,
     },
     {
       title: "Siblings",
@@ -112,7 +129,6 @@ export default function SubmittedEnrolmentForms() {
           placeholder="Search by name or email"
           allowClear
           enterButton="Search"
-          size="large"
           value={search}
           onChange={e => setSearch(e.target.value)}
           onSearch={e => setSearch(e)}

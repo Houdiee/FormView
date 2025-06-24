@@ -11,7 +11,7 @@ export default function HomePage() {
           <FormOutlined/> Available Forms
         </Typography.Title>
         <List>
-          <Link to="forms/enrolments">
+          <Link to="forms/enrolment">
             <Typography.Link className="!text-base">Enrolment Form</Typography.Link>
           </Link>
         </List>

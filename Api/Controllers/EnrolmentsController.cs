@@ -147,4 +147,29 @@ public class EnrolmentsController(AppDbContext context, IResend resend) : Contro
             );
         }
     }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteForm(int id)
+    {
+        EnrolmentForm? form = await _context.EnrolmentForms.FindAsync(id);
+        if (form == null)
+        {
+            return BadRequest(new { error = "Form does not exist" });
+        }
+
+        _context.EnrolmentForms.Remove(form);
+        try
+        {
+            await _context.SaveChangesAsync();
+            return Ok(form);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Error: {e}");
+            return StatusCode(
+                StatusCodes.Status500InternalServerError,
+                new { error = "An unexpected problem occurred" }
+            );
+        }
+    }
 }
