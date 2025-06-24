@@ -68,14 +68,6 @@ export default function EnrolmentForm({ formId, onSubmitSuccessful }: EnrolmentF
         form.setFieldsValue({ filePath: undefined });
         setFileList([]);
       }
-    } else if (info.file.status === 'error') {
-      setUploadingPhoto(false);
-      api.error({
-        message: "Photo Upload Failed",
-        description: info.file.response?.Message || "An unexpected error occurred during photo upload.",
-      });
-      form.setFieldsValue({ filePath: undefined });
-      setFileList([]);
     } else if (info.file.status === 'removed') {
       setUploadingPhoto(false);
       form.setFieldsValue({ filePath: undefined });

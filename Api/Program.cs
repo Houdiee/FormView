@@ -80,13 +80,10 @@ app.UseRouting();
 
 app.UseStaticFiles(new StaticFileOptions
 {
-    // Ensure this path exactly matches where your images are saved.
-    // builder.Environment.ContentRootPath is typically your project directory.
     FileProvider = new PhysicalFileProvider(
-        Path.Combine(builder.Environment.ContentRootPath, "images")),
+        Path.Combine(builder.Environment.ContentRootPath, "images")
+    ),
 
-    // This is the URL prefix you expect in the browser.
-    // It *must* match exactly what your controller returns (e.g., "/images")
     RequestPath = "/images"
 });
 

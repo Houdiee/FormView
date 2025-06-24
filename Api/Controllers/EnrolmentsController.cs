@@ -13,12 +13,14 @@ namespace Api.Controllers;
 public class EnrolmentsController(
     AppDbContext context,
     IResend resend,
-    IWebHostEnvironment webHostEnvironment
+    IWebHostEnvironment webHostEnvironment,
+    IConfiguration configuration
 ) : ControllerBase
 {
     private readonly AppDbContext _context = context;
     private readonly IResend _resend = resend;
     private readonly IWebHostEnvironment _webHostEnvironment = webHostEnvironment;
+    private readonly IConfiguration _configuration = configuration;
 
     [HttpPost]
     public async Task<IActionResult> SaveEnrolmentFormToDb([FromBody] EnrolmentFormRequestDto formDto)
@@ -213,7 +215,7 @@ public class EnrolmentsController(
 
             return Ok(new
             {
-                filePath = newFileName,
+                filePath = $"{_configuration["ApplicationBaseUrl"]}/images/{newFileName}",
                 Message = "File uploaded successfully"
             });
         }
