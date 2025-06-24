@@ -2,16 +2,29 @@ import { useEffect, useState } from "react";
 import { type EnrolmentPayload } from "../../handlers/EnrolmentFormHandler";
 import axios from "axios";
 import { API_BACKEND_URL } from "../../main";
-import { Flex, Table } from "antd";
+import { Button, Flex, message, Popconfirm, Table } from "antd";
 import countries from "country-list";
 import dayjs from "dayjs";
 import Search from "antd/es/input/Search";
 import { useNavigate } from "react-router";
+import { DeleteOutlined } from "@ant-design/icons";
 
 export default function SubmittedEnrolmentForms() {
   const [forms, setForms] = useState<EnrolmentPayload[]>([])
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
+
+  const handleDelete = async (id: string) => {
+    try {
+      await axios.delete(`${API_BACKEND_URL}/forms/enrolments/${id}`);
+      message.success("Form deleted successfully!");
+      setForms(prevForms => prevForms.filter(form => form.id !== id));
+    } catch (error) {
+      console.error(`Failed to delete form with ID ${id}:`, error);
+      message.error("Failed to delete form.");
+    }
+  };
+
 
   const columns = [
     {
@@ -107,7 +120,32 @@ export default function SubmittedEnrolmentForms() {
       render: (createdAt: string) => dayjs(createdAt).format("DD/MM/YYYY hh:mm a"),
       sorter: (a, b) => dayjs(a.createdAt).unix() - dayjs(b.createdAt).unix(),
     },
+    {
+      title: "Action",
+      width: 80,
+      render: (_, record) => (
+        <Popconfirm
+          title="Delete form"
+          onConfirm={async (e) => {
+            e?.stopPropagation();
+            await handleDelete(record.id!);
+          }}
+          onCancel={(e) => {
+            e?.stopPropagation();
+          }}
+          okText="Yes"
+          okType="danger"
+          cancelText="No"
+        >
+          <Button
+            onClick={(e) => e.stopPropagation()}
+            type="link" danger icon={<DeleteOutlined />}
+          />
+        </Popconfirm>
+      ),
+    },
   ];
+
 
   useEffect(() => {
     const fetchForms = async () => {
