@@ -1,65 +1,89 @@
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import { Button, Form, Input, type FormProps } from "antd";
+import { Button, Form, Input, notification, type FormProps } from "antd";
 import { Link } from "react-router";
 import { validateEmail, validateText } from "../common/validator";
+import loginHandler from "../handlers/LoginHandler";
+import { useNavigate } from "react-router";
+import axios from "axios";
+
+export type LoginFormValues = {
+  email?: string;
+  password?: string;
+};
 
 export default function LoginForm() {
-  type FieldType = {
-    email?: string;
-    password?: string;
-  };
-
   const [form] = Form.useForm();
+  const [api, contextHolder] = notification.useNotification();
+  const navigate = useNavigate();
 
-  const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
-    console.log('Success:', values);
+  const onFinish: FormProps<LoginFormValues>['onFinish'] = async (values) => {
+    try {
+      await loginHandler(values);
+      navigate("/admin");
+    }
+    catch (error) {
+      let errorMessage = "An unexpected problem occurred";
+
+      if (axios.isAxiosError(error) && error.response?.data.error) {
+        errorMessage = error.response.data.error;
+      }
+
+      api["error"]({
+        message: "Sign Up Failed",
+        description: errorMessage,
+      });
+    }
   };
 
-  const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
+  const onFinishFailed: FormProps<LoginFormValues>['onFinishFailed'] = (errorInfo) => {
     console.log('Failed:', errorInfo);
   };
 
   return (
-    <Form
-      form={form}
-      onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
-      className="w-100"
-    >
-      <Form.Item<FieldType>
-        name="email"
-        rules={validateEmail(true)}
+    <>
+      {contextHolder}
+      <Form
+        form={form}
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
+        className="w-100"
       >
-        <Input placeholder="Email" prefix={ <UserOutlined/> } />
-      </Form.Item>
-
-      <Form.Item<FieldType>
-        name="password"
-        hasFeedback
-        rules={validateText(true)}
-      >
-        <Input.Password
-          placeholder="Password"
-          type="password"
-          prefix={ <LockOutlined/> }
-        />
-      </Form.Item>
-
-      <Form.Item>
-        <Button
-          type="primary"
-          htmlType="submit"
-          className="!w-full"
+        <Form.Item<LoginFormValues>
+          name="email"
+          rules={validateEmail(true)}
         >
-          Log In
-        </Button>
-      </Form.Item>
+          <Input placeholder="Email" prefix={ <UserOutlined/> } />
+        </Form.Item>
 
-      <Link to="/signup">
-        <Button type="link" className="w-full">
-          Don't have an account? Request one here
-        </Button>
-      </Link>
-    </Form>
+        <Form.Item<LoginFormValues>
+          name="password"
+          hasFeedback
+          rules={validateText(true)}
+        >
+          <Input.Password
+            placeholder="Password"
+            type="password"
+            prefix={ <LockOutlined/> }
+          />
+        </Form.Item>
+
+        <Form.Item>
+          <Button
+            type="primary"
+            htmlType="submit"
+            className="!w-full"
+          >
+            Log In
+          </Button>
+        </Form.Item>
+
+        <Link to="/signup">
+          <Button type="link" className="w-full">
+            Don't have an account? Request one here
+          </Button>
+        </Link>
+      </Form>
+
+    </>
   );
 }

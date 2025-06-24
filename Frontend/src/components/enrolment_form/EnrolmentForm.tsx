@@ -307,7 +307,7 @@ export default function EnrolmentForm({ formId, onSubmitSuccessful }: EnrolmentF
         <Flex justify="end">
           <Form.Item>
               <Button
-                disabled={submitting}
+                disabled={submitting || formDisabled}
                 htmlType="submit"
                 type="primary"
               >{formId ? "Update" : (submitting ? "Submitting..." : "Submit")}</Button>

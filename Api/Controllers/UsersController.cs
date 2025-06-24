@@ -12,7 +12,7 @@ public class UsersController(AppDbContext context) : ControllerBase
     [HttpGet("{userId}")]
     public async Task<IActionResult> GetUserById(int userId)
     {
-        User? user = await _context.Users.FindAsync(userId);
+        UserModel? user = await _context.Users.FindAsync(userId);
         if (user == null)
         {
             return BadRequest(new { error = "User does not exist" });
@@ -32,7 +32,7 @@ public class UsersController(AppDbContext context) : ControllerBase
     [HttpGet]
     public async Task<IActionResult> QueryUserByEmail(string email)
     {
-        User? user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+        UserModel? user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
         if (user == null)
         {
             return BadRequest(new { error = "User does not exist" });

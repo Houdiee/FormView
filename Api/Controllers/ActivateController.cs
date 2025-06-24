@@ -15,7 +15,7 @@ public class ActivateController(AppDbContext context, IResend resend) : Controll
     [HttpGet("{token}")]
     public async Task<IActionResult> ActivateAccountToAdmin(Guid token)
     {
-        User? user = await _context.Users.FirstOrDefaultAsync(u => u.ActivationToken == token);
+        UserModel? user = await _context.Users.FirstOrDefaultAsync(u => u.ActivationToken == token);
         if (user == null)
         {
             return BadRequest(new { error = "User not found" });

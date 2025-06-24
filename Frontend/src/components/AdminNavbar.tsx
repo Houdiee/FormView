@@ -5,10 +5,10 @@ import { Link } from 'react-router';
 export default function AdminNavbar() {
   const items = [
     {
-      key: "available-forms",
+      key: "form-submissions",
       label: (
-        <Link to="/">
-          Available Forms
+        <Link to="/admin">
+          Form Submissions
         </Link>
       ),
       icon: <EditOutlined />,

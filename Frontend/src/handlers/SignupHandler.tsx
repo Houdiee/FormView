@@ -9,6 +9,7 @@ export default async function signupHandler(req: SignupFormValues) {
       "lastName": req.lastName!,
       "email": req.email!,
       "password": req.password!,
+      "confirmPassword": req.confirmPassword!,
     });
   } catch (error) {
     throw error;

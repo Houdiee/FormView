@@ -8,6 +8,7 @@ public class SignupRequestDto
     public required string LastName { get; set; }
     public required string Email { get; set; }
     public required string Password { get; set; }
+    public required string ConfirmPassword { get; set; }
 }
 
 public class SignupRequestDtoValidator : AbstractValidator<SignupRequestDto>
@@ -34,5 +35,11 @@ public class SignupRequestDtoValidator : AbstractValidator<SignupRequestDto>
             .NotNull().WithMessage("Password not provided")
             .NotEmpty().WithMessage("Password cannot be empty")
             .MaximumLength(128).WithMessage("Password cannot exceed 128 characters");
+
+        RuleFor(x => x.ConfirmPassword)
+            .NotNull().WithMessage("Password not provided")
+            .NotEmpty().WithMessage("Password cannot be empty")
+            .MaximumLength(128).WithMessage("Password cannot exceed 128 characters")
+            .Equal(x => x.Password).WithMessage("Passwords do not match");
     }
 }

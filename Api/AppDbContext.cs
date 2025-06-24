@@ -5,13 +5,13 @@ public class AppDbContext(IConfiguration configuration) : DbContext
 {
     private readonly IConfiguration _configuration = configuration;
 
-    public DbSet<User> Users { get; set; } = null!;
+    public DbSet<UserModel> Users { get; set; } = null!;
     public DbSet<EnrolmentForm> EnrolmentForms { get; set; } = null!;
     public DbSet<EnrolmentFormSibling> EnrolmentFormSiblings { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<User>().HasKey(u => u.Id);
+        modelBuilder.Entity<UserModel>().HasKey(u => u.Id);
 
         modelBuilder.Entity<EnrolmentForm>().HasKey(f => f.Id);
 

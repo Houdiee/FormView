@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Resend;
 using Dtos;
@@ -8,22 +9,29 @@ namespace Api.Controllers;
 
 [ApiController]
 [Route("api/pending/[controller]")]
-public class SignupController(AppDbContext context, IConfiguration configuration, IResend resend) : ControllerBase
+public class SignupController(
+    AppDbContext context,
+    IConfiguration configuration,
+    IResend resend,
+    IPasswordHasher<UserModel> passwordHasher
+) : ControllerBase
 {
     private readonly AppDbContext _context = context;
     private readonly IConfiguration _configuration = configuration;
     private readonly IResend _resend = resend;
+    private readonly IPasswordHasher<UserModel> _passwordHasher = passwordHasher;
 
     [HttpPost]
     public async Task<IActionResult> SignupAndRequestAdminAccess([FromBody] SignupRequestDto req)
     {
-        User? existingUser = await _context.Users.FirstOrDefaultAsync(u => u.Email == req.Email);
+        UserModel? existingUser = await _context.Users.FirstOrDefaultAsync(u => u.Email == req.Email);
         if (existingUser != null && existingUser.Status == Status.Pending)
         {
             return BadRequest(new { error = "User has already requested to become an admin" });
         }
 
-        User newUser = new()
+
+        UserModel newUser = new()
         {
             FirstName = req.FirstName,
             LastName = req.LastName,
@@ -31,6 +39,7 @@ public class SignupController(AppDbContext context, IConfiguration configuration
             Status = Status.Pending,
             ActivationToken = Guid.NewGuid(),
         };
+        newUser.HashedPassword = _passwordHasher.HashPassword(newUser, req.Password);
 
         await _context.Users.AddAsync(newUser);
 

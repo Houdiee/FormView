@@ -1,8 +1,12 @@
 using Resend;
+using Microsoft.AspNetCore.Identity;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Password Hasher
+builder.Services.AddScoped<IPasswordHasher<Models.UserModel>, PasswordHasher<Models.UserModel>>();
 
 // EF Core setup
 using (var context = new AppDbContext(builder.Configuration))

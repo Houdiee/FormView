@@ -23,15 +23,15 @@ export default function SignupForm({ onFormCompletion }: SignupFormProps) {
 
   const onFinish: FormProps<SignupFormValues>['onFinish'] = async (values) => {
     try {
-      if (values.password === values.confirmPassword) {
-        await signupHandler(values);
-        onFormCompletion(true);
-      }
+      await signupHandler(values);
+      onFormCompletion(true);
     }
     catch (error) {
       let errorMessage = "An unexpected problem occurred";
 
       if (axios.isAxiosError(error) && error.response?.data.error) {
+        errorMessage = error.response.data.error;
+
         if (error.status === HttpStatusCode.BadRequest) {
           api["warning"]({
             message: "Account Already Exists",
