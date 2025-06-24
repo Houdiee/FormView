@@ -8,8 +8,8 @@ using Dtos;
 namespace Api.Controllers;
 
 [ApiController]
-[Route("api/forms/enrolments")]
-public class EnrolmentFormController(AppDbContext context, IResend resend) : ControllerBase
+[Route("api/forms/[controller]")]
+public class EnrolmentsController(AppDbContext context, IResend resend) : ControllerBase
 {
     private readonly AppDbContext _context = context;
     private readonly IResend _resend = resend;
@@ -28,7 +28,13 @@ public class EnrolmentFormController(AppDbContext context, IResend resend) : Con
             Gender = formDto.Gender,
             CountryOfBirth = formDto.CountryOfBirth,
             CountryOfCitizenship = formDto.CountryOfCitizenship,
-            Siblings = formDto.Siblings.Select(static s => s.FirstName + ' ' + s.LastName).ToList(),
+            Siblings = formDto.Siblings?.Select(
+                siblingDto => new EnrolmentFormSibling
+                {
+                    FirstName = siblingDto.FirstName,
+                    LastName = siblingDto.LastName
+                })
+                .ToList() ?? new List<EnrolmentFormSibling>(),
             CreatedAt = DateTime.Now.ToUniversalTime(),
         };
 
@@ -63,7 +69,7 @@ public class EnrolmentFormController(AppDbContext context, IResend resend) : Con
     [HttpGet]
     public async Task<IActionResult> ListAllEnrolmentForms([FromQuery] string? search = null)
     {
-        IQueryable<EnrolmentForm> query = _context.EnrolmentForms;
+        IQueryable<EnrolmentForm> query = _context.EnrolmentForms.Include(f => f.Siblings);
 
         if (!string.IsNullOrEmpty(search))
         {
@@ -101,7 +107,10 @@ public class EnrolmentFormController(AppDbContext context, IResend resend) : Con
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateForm(int id, [FromBody] EnrolmentFormRequestDto formDto)
     {
-        EnrolmentForm? existingForm = await _context.EnrolmentForms.FindAsync(id);
+        EnrolmentForm? existingForm = await _context.EnrolmentForms
+                                                .Include(f => f.Siblings)
+                                                .FirstOrDefaultAsync(f => f.Id == id);
+
         if (existingForm == null)
         {
             return BadRequest(new { error = "Form does not exist" });
@@ -114,7 +123,13 @@ public class EnrolmentFormController(AppDbContext context, IResend resend) : Con
         existingForm.Gender = formDto.Gender;
         existingForm.CountryOfBirth = formDto.CountryOfBirth;
         existingForm.CountryOfCitizenship = formDto.CountryOfCitizenship;
-        existingForm.Siblings = formDto.Siblings.Select(static s => s.FirstName + ' ' + s.LastName).ToList();
+        existingForm.Siblings = formDto.Siblings?.Select(
+            siblingDto => new EnrolmentFormSibling
+            {
+                FirstName = siblingDto.FirstName,
+                LastName = siblingDto.LastName
+            })
+            .ToList() ?? new List<EnrolmentFormSibling>();
 
         return Ok(existingForm);
     }

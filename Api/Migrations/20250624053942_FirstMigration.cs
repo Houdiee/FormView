@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -8,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Api.Migrations
 {
     /// <inheritdoc />
-    public partial class First : Migration
+    public partial class FirstMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -28,7 +27,6 @@ namespace Api.Migrations
                     Gender = table.Column<string>(type: "text", nullable: false),
                     CountryOfBirth = table.Column<string>(type: "text", nullable: false),
                     CountryOfCitizenship = table.Column<string>(type: "text", nullable: false),
-                    Siblings = table.Column<List<string>>(type: "text[]", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
@@ -52,16 +50,45 @@ namespace Api.Migrations
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "EnrolmentFormSiblings",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    FirstName = table.Column<string>(type: "text", nullable: false),
+                    LastName = table.Column<string>(type: "text", nullable: false),
+                    EnrolmentFormId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EnrolmentFormSiblings", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_EnrolmentFormSiblings_EnrolmentForms_EnrolmentFormId",
+                        column: x => x.EnrolmentFormId,
+                        principalTable: "EnrolmentForms",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EnrolmentFormSiblings_EnrolmentFormId",
+                table: "EnrolmentFormSiblings",
+                column: "EnrolmentFormId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "EnrolmentForms");
+                name: "EnrolmentFormSiblings");
 
             migrationBuilder.DropTable(
                 name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "EnrolmentForms");
         }
     }
 }

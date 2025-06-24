@@ -74,8 +74,7 @@ export default function EnrolmentForm({ formId, onSubmitSuccessful }: EnrolmentF
       }
 
       try {
-        const response = await axios.get(`${API_BACKEND_URL}/forms/enrolments/${formId}`);
-        const fetchedData = response.data;
+        const fetchedData = (await axios.get(`${API_BACKEND_URL}/forms/enrolments/${formId}`)).data;
         const transformedData: EnrolmentFormValues = {
           ...fetchedData,
           dateOfBirth: fetchedData.dateOfBirth ? dayjs(fetchedData.dateOfBirth) : undefined,
@@ -90,7 +89,7 @@ export default function EnrolmentForm({ formId, onSubmitSuccessful }: EnrolmentF
     };
 
     fetchFormData();
-  });
+  }, [formId]);
 
   useEffect(() => {
     if (dateOfBirth) {
@@ -223,7 +222,7 @@ export default function EnrolmentForm({ formId, onSubmitSuccessful }: EnrolmentF
                 <Flex align="baseline" gap="small" key={key}>
                   <Form.Item<SiblingFormValues>
                     {...restField}
-                    name={"firstName"}
+                    name={[name, "firstName"]}
                     rules={validateAlphabetical(true)}
                     className="flex-grow"
                     hasFeedback
@@ -232,7 +231,7 @@ export default function EnrolmentForm({ formId, onSubmitSuccessful }: EnrolmentF
                   </Form.Item>
                   <Form.Item<SiblingFormValues>
                     {...restField}
-                    name={"lastName"}
+                    name={[name, "lastName"]}
                     rules={validateAlphabetical(true)}
                     className="flex-grow"
                     hasFeedback

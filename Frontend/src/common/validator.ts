@@ -9,8 +9,14 @@ export const validateAlphabetical = (required: boolean): Rule[] => [
   { max: 128, message: "Too long" },
   {
     validator: (_: any, value: string) => {
+      if (value === undefined || value === null || value === "") {
+        return Promise.resolve();
+      }
       if (/\d/.test(value)) {
         return Promise.reject(new Error("Cannot include numbers"));
+      }
+      if (value.includes(" ")) {
+        return Promise.reject(new Error("Cannot include spaces"));
       }
       return Promise.resolve();
     },

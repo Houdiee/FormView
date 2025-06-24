@@ -69,6 +69,20 @@ export default function SubmittedEnrolmentForms() {
     {
       title: "Siblings",
       dataIndex: "siblings",
+      render: (siblings: { firstName: string; lastName: string }[]) => {
+         if (!siblings || siblings.length === 0) {
+           return "N/A";
+         }
+         return (
+           <ul>
+             {siblings.map((sibling, index) => (
+               <li key={index}>
+                 {sibling.firstName},
+               </li>
+             ))}
+           </ul>
+         );
+       },
     },
     {
       title: "Submitted on",

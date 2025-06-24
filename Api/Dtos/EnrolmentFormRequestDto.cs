@@ -1,5 +1,6 @@
 using FluentValidation;
 using System.Globalization;
+using Models;
 
 namespace Dtos;
 
@@ -14,10 +15,10 @@ public class EnrolmentFormRequestDto
     public required string Gender { get; set; }
     public required string CountryOfBirth { get; set; }
     public required string CountryOfCitizenship { get; set; }
-    public required List<Sibling> Siblings { get; set; }
+    public required List<EnrolmentFormSiblingRequestDto>? Siblings { get; set; }
 }
 
-public class Sibling
+public class EnrolmentFormSiblingRequestDto
 {
     public required string FirstName { get; set; }
     public required string LastName { get; set; }
@@ -36,7 +37,8 @@ public class EnrolmentFormRequestDtoValidator : AbstractValidator<EnrolmentFormR
         RuleFor(x => x.MiddleName)
             .NotEmpty().WithMessage("Middle name cannot be empty")
             .MaximumLength(128).WithMessage("Middle name cannot exceed 128 characters")
-            .Must(name => name.All(char.IsLetter)).WithMessage("Middle name should consist of letters");
+            .Must(name => name.All(char.IsLetter)).WithMessage("Middle name should consist of letters")
+            .When(x => x.MiddleName != null);
 
         RuleFor(x => x.LastName)
             .NotNull().WithMessage("Last name not provided")
@@ -85,12 +87,10 @@ public class EnrolmentFormRequestDtoValidator : AbstractValidator<EnrolmentFormR
         RuleForEach(x => x.Siblings).ChildRules(sibling =>
         {
             sibling.RuleFor(s => s.FirstName)
-                .NotNull().WithMessage("Sibling first name not provided")
                 .NotEmpty().WithMessage("Sibling first name cannot be empty")
                 .Must(name => name.All(char.IsLetter)).WithMessage("Sibling first name should consist of letters");
 
             sibling.RuleFor(s => s.LastName)
-                .NotNull().WithMessage("Sibling last name not provided")
                 .NotEmpty().WithMessage("Sibling last name cannot be empty")
                 .Must(name => name.All(char.IsLetter)).WithMessage("Sibling last name should consist of letters");
         });
