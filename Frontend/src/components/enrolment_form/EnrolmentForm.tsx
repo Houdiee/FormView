@@ -69,7 +69,7 @@ export default function EnrolmentForm({ formId, onSubmitSuccessful }: EnrolmentF
       setUploadingPhoto(false);
       form.setFieldsValue({ filePath: undefined });
       setFileList([]);
-    } else if (info.file.status === 'error') { // Add this block for error handling
+    } else if (info.file.status === 'error') {
       setUploadingPhoto(false);
       api.error({
         message: "Photo Upload Failed",

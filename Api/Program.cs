@@ -48,8 +48,7 @@ builder.Services.AddCors(options =>
         policy
             .AllowAnyHeader()
             .AllowAnyMethod()
-            .AllowAnyOrigin();
-        // .WithOrigins("https://formview.org");
+            .WithOrigins(["https://formview.org", "http://localhost:5173"]);
     });
 });
 
@@ -88,14 +87,7 @@ app.UseRouting();
 
 app.UseCors();
 
-app.UseStaticFiles(new StaticFileOptions
-{
-    FileProvider = new PhysicalFileProvider(
-        Path.Combine(builder.Environment.ContentRootPath, "images")
-    ),
-
-    RequestPath = "/images"
-});
+app.UseStaticFiles();
 
 app.UseAuthorization();
 

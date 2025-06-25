@@ -31,7 +31,7 @@ public class EnrolmentsController(
             MiddleName = formDto.MiddleName ?? string.Empty,
             LastName = formDto.LastName,
             Email = formDto.Email,
-            DateOfBirth = DateTime.ParseExact(formDto.DateOfBirth, "dd/MM/yyyy", CultureInfo.InvariantCulture).ToUniversalTime(),
+            DateOfBirth = formDto.DateOfBirth.ToUniversalTime(),
             Age = formDto.Age,
             Gender = formDto.Gender,
             CountryOfBirth = formDto.CountryOfBirth,
@@ -135,6 +135,7 @@ public class EnrolmentsController(
         existingForm.LastName = formDto.LastName;
         existingForm.Email = formDto.Email;
         existingForm.Gender = formDto.Gender;
+        existingForm.DateOfBirth = formDto.DateOfBirth.ToUniversalTime();
         existingForm.CountryOfBirth = formDto.CountryOfBirth;
         existingForm.CountryOfCitizenship = formDto.CountryOfCitizenship;
         existingForm.Siblings = formDto.Siblings?.Select(
@@ -196,7 +197,8 @@ public class EnrolmentsController(
 
         try
         {
-            var uploadDirectory = Path.Combine(Directory.GetCurrentDirectory(), "images");
+            var webRootPath = _webHostEnvironment.WebRootPath;
+            var uploadDirectory = Path.Combine(webRootPath, "images");
 
             if (!Directory.Exists(uploadDirectory))
             {

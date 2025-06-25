@@ -10,7 +10,7 @@ public class EnrolmentFormRequestDto
     public string? MiddleName { get; set; }
     public required string LastName { get; set; }
     public required string Email { get; set; }
-    public required string DateOfBirth { get; set; }
+    public required DateTime DateOfBirth { get; set; }
     public required int Age { get; set; }
     public required string Gender { get; set; }
     public required string CountryOfBirth { get; set; }
@@ -55,19 +55,9 @@ public class EnrolmentFormRequestDtoValidator : AbstractValidator<EnrolmentFormR
 
         RuleFor(x => x.DateOfBirth)
             .NotNull().WithMessage("Date of birth not provided")
-            .NotEmpty().WithMessage("Date of birth cannot be empty")
-            .Must(date =>
-            {
-                if (DateTime.TryParseExact(date, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out _))
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            })
-            .WithMessage("Invalid date format");
+                .WithMessage("Date of birth must be a valid date between 1900 and today.")
+            .Must(date => date <= DateTime.UtcNow)
+                .WithMessage("Date of birth must be a valid date between 1900 and today.");
 
         RuleFor(x => x.Age)
             .NotNull().WithMessage("Age not provided");

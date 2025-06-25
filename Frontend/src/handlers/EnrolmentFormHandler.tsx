@@ -38,7 +38,7 @@ export default async function enrolmentFormHandler(
       middleName: req?.middleName! || null,
       lastName: req?.lastName!,
       email: req?.email!,
-      dateOfBirth: req?.dateOfBirth!.format("DD/MM/YYYY")!,
+      dateOfBirth: req?.dateOfBirth!.toISOString()!,
       age: parseInt(req?.age!),
       gender: req?.gender!,
       countryOfBirth: req?.countryOfBirth!,
