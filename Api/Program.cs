@@ -48,7 +48,8 @@ builder.Services.AddCors(options =>
         policy
             .AllowAnyHeader()
             .AllowAnyMethod()
-            .WithOrigins(builder.Configuration.GetConnectionString("Frontend")!);
+            .AllowAnyOrigin();
+        // .WithOrigins("https://formview.org");
     });
 });
 
@@ -71,12 +72,21 @@ builder.Services.AddOpenApi();
 
 var app = builder.Build();
 
+// Cloudlare setup
+app.UseForwardedHeaders(new ForwardedHeadersOptions
+{
+    ForwardedHeaders = Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders.XForwardedFor |
+                       Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders.XForwardedProto
+});
+
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
 
 app.UseRouting();
+
+app.UseCors();
 
 app.UseStaticFiles(new StaticFileOptions
 {
@@ -86,8 +96,6 @@ app.UseStaticFiles(new StaticFileOptions
 
     RequestPath = "/images"
 });
-
-app.UseCors();
 
 app.UseAuthorization();
 
