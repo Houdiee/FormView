@@ -1,3 +1,4 @@
 wwwroot/
 Migrations/
 appsettings.json
+.cloudflared/
