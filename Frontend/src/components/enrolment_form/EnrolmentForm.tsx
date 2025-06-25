@@ -129,10 +129,6 @@ export default function EnrolmentForm({ formId, onSubmitSuccessful }: EnrolmentF
 
   const onFinishFailed: FormProps<EnrolmentFormValues>['onFinishFailed'] = (errorInfo) => {
     console.error('Form submission failed:', errorInfo);
-    api.error({
-      message: "Validation Error",
-      description: "Please fill in all required fields correctly.",
-    });
   };
 
   const handleCancel = () => {
