@@ -1,7 +1,7 @@
 import { Card, Flex, List, Typography } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router";
+import { Link } from "react-router";
 import { API_BACKEND_URL } from "../main";
 import AdminNavbar from "../components/AdminNavbar";
 

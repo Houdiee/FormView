@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import enrolmentFormHandler, { type EnrolmentFormDto } from "../../handlers/EnrolmentFormHandler";
 import axios, { isAxiosError } from "axios";
 import { API_BACKEND_URL } from "../../main";
-import { Button, Flex, message, notification, Popconfirm, Table } from "antd";
+import { Button, Flex, notification, Popconfirm, Table } from "antd";
 import countries from "country-list";
 import dayjs from "dayjs";
 import Search from "antd/es/input/Search";
@@ -194,6 +194,7 @@ export default function SubmittedEnrolmentForms() {
           className="cursor-pointer h-150"
           onRow={(record) => {
             return {
+              //@ts-ignore
               onClick: (event) => {
                 navigate(`${record.id}`);
               },
