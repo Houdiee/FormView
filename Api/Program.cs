@@ -88,9 +88,7 @@ app.UseStaticFiles(new StaticFileOptions
 });
 
 app.UseCors();
-//
-// TODO ADD httpRedirection
-//
+
 app.UseAuthorization();
 
 app.MapControllers();

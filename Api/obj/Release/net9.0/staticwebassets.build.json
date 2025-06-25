@@ -1,0 +1,20 @@
+{
+  "Version": 1,
+  "Hash": "m7OjixzVhw1l//T2K6ViDGE5gxV+Xf7FOSXYVaTZDow=",
+  "Source": "Api",
+  "BasePath": "_content/Api",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "Api/wwwroot",
+      "Source": "Api",
+      "ContentRoot": "/home/kerim/projects/FormView/Api/wwwroot/",
+      "BasePath": "_content/Api",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [],
+  "Endpoints": []
+}
