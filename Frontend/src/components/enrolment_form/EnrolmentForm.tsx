@@ -47,13 +47,10 @@ export default function EnrolmentForm({ formId, onSubmitSuccessful }: EnrolmentF
   const dateOfBirth = Form.useWatch("dateOfBirth", form);
 
   const handlePhotoChange = (info: any) => {
-    let newFileList = [...info.fileList];
-
-    newFileList = newFileList.slice(-1);
-
-    setFileList(newFileList);
+    setFileList(info.fileList.slice(-1));
 
     if (info.file.status === 'uploading') {
+      setUploadingPhoto(true);
     } else if (info.file.status === 'done') {
       setUploadingPhoto(false);
       const uploadedFilePath = info.file.response?.filePath;
@@ -71,6 +68,7 @@ export default function EnrolmentForm({ formId, onSubmitSuccessful }: EnrolmentF
     } else if (info.file.status === 'removed') {
       setUploadingPhoto(false);
       form.setFieldsValue({ filePath: undefined });
+      setFileList([]);
     }
   };
 
