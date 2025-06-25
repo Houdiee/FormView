@@ -69,6 +69,14 @@ export default function EnrolmentForm({ formId, onSubmitSuccessful }: EnrolmentF
       setUploadingPhoto(false);
       form.setFieldsValue({ filePath: undefined });
       setFileList([]);
+    } else if (info.file.status === 'error') { // Add this block for error handling
+      setUploadingPhoto(false);
+      api.error({
+        message: "Photo Upload Failed",
+        description: "An error occurred during photo upload. Please try again.",
+      });
+      form.setFieldsValue({ filePath: undefined });
+      setFileList([]);
     }
   };
 
@@ -422,7 +430,7 @@ export default function EnrolmentForm({ formId, onSubmitSuccessful }: EnrolmentF
         <Flex justify="end">
           <Form.Item>
             <Button
-              disabled={submitting || formDisabled || uploadingPhoto || !form.getFieldValue('filePath')}
+              disabled={submitting || formDisabled || uploadingPhoto}
               htmlType="submit"
               type="primary"
             >
