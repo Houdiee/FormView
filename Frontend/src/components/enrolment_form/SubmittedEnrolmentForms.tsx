@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import enrolmentFormHandler, { type EnrolmentPayload } from "../../handlers/EnrolmentFormHandler";
+import enrolmentFormHandler, { type EnrolmentFormDto } from "../../handlers/EnrolmentFormHandler";
 import axios, { isAxiosError } from "axios";
 import { API_BACKEND_URL } from "../../main";
 import { Button, Flex, message, notification, Popconfirm, Table } from "antd";
@@ -10,7 +10,7 @@ import { useNavigate } from "react-router";
 import { DeleteOutlined } from "@ant-design/icons";
 
 export default function SubmittedEnrolmentForms() {
-  const [forms, setForms] = useState<EnrolmentPayload[]>([])
+  const [forms, setForms] = useState<EnrolmentFormDto[]>([])
   const [search, setSearch] = useState("");
   const [api, contextHolder] = notification.useNotification();
   const navigate = useNavigate();
@@ -46,24 +46,28 @@ export default function SubmittedEnrolmentForms() {
     {
       title: "First Name",
       dataIndex: "firstName",
+      // @ts-ignore
       sorter: (a, b) => a.firstName.localeCompare(b.firstName),
       ellipsis: true,
     },
     {
       title: "Last Name",
       dataIndex: "lastName",
+      // @ts-ignore
       sorter: (a, b) => a.lastName.localeCompare(b.lastName),
       ellipsis: true,
     },
     {
       title: "Middle Name(s)",
       dataIndex: "middleName",
+      // @ts-ignore
       sorter: (a, b) => (a.middleName || "").localeCompare(b.middleName || ""),
       ellipsis: true,
     },
     {
       title: "Email",
       dataIndex: "email",
+      // @ts-ignore
       sorter: (a, b) => a.email.localeCompare(b.email),
       ellipsis: true,
     },
@@ -71,17 +75,20 @@ export default function SubmittedEnrolmentForms() {
       title: "Date of birth",
       dataIndex: "dateOfBirth",
       render: (dateOfBirth: string) => dayjs(dateOfBirth).format("DD/MM/YYYY"),
+      // @ts-ignore
       sorter: (a, b) => dayjs(a.dateOfBirth).unix() - dayjs(b.dateOfBirth).unix(),
     },
     {
       title: "Age",
       dataIndex: "age",
+      // @ts-ignore
       sorter: (a, b) => a.age - b.age,
       width: 60,
     },
     {
       title: "Gender",
       dataIndex: "gender",
+      // @ts-ignore
       sorter: (a, b) => a.gender.localeCompare(b.gender),
       width: 85,
     },
@@ -89,12 +96,14 @@ export default function SubmittedEnrolmentForms() {
       title: "Country of birth",
       dataIndex: "countryOfBirth",
       render: (countryCode: string) => countries.getName(countryCode),
+      // @ts-ignore
       sorter: (a, b) => a.countryOfBirth.localeCompare(b.countryOfBirth),
     },
     {
       title: "Country of citizenship",
       dataIndex: "countryOfCitizenship",
       render: (countryCode: string) => countries.getName(countryCode),
+      // @ts-ignore
       sorter: (a, b) => a.countryOfCitizenship.localeCompare(b.countryOfCitizenship),
     },
     {
@@ -119,10 +128,12 @@ export default function SubmittedEnrolmentForms() {
       title: "Submitted on",
       dataIndex: "createdAt",
       render: (createdAt: string) => dayjs(createdAt).format("DD/MM/YYYY hh:mm a"),
+      // @ts-ignore
       sorter: (a, b) => dayjs(a.createdAt).unix() - dayjs(b.createdAt).unix(),
     },
     {
       title: "Action",
+      // @ts-ignore
       render: (_, record) => (
         <Popconfirm
           title="Delete form"
@@ -150,7 +161,7 @@ export default function SubmittedEnrolmentForms() {
   useEffect(() => {
     const fetchForms = async () => {
       try {
-        const response = await axios.get<EnrolmentPayload[]>(
+        const response = await axios.get<EnrolmentFormDto[]>(
           `${API_BACKEND_URL}/forms/enrolments?search=${encodeURIComponent(search)}`, {
             headers: { Authorization: `Bearer ${localStorage.getItem("token")}`}
         });

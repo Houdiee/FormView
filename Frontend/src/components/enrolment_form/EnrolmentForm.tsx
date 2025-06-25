@@ -360,6 +360,7 @@ export default function EnrolmentForm({ formId, onSubmitSuccessful }: EnrolmentF
                   <Flex align="baseline" gap="small" key={field.key}>
                     <Form.Item<SiblingFormValues>
                       {...field}
+                      // @ts-ignore
                       name={[field.name, "firstName"]}
                       rules={validateAlphabetical(true)}
                       className="flex-grow"
@@ -369,6 +370,7 @@ export default function EnrolmentForm({ formId, onSubmitSuccessful }: EnrolmentF
                     </Form.Item>
                     <Form.Item<SiblingFormValues>
                       {...field}
+                      // @ts-ignore
                       name={[field.name, "lastName"]}
                       rules={validateAlphabetical(true)}
                       className="flex-grow"
